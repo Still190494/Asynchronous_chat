@@ -1,1 +1,18 @@
-{"orders": []}
+{
+    "orders": [
+        {
+            "Item": "Iphone 10",
+            "Quantity": 1,
+            "Price": 40000,
+            "Buyer": "Ksenya",
+            "Date": "2023-04-23"
+        },
+        {
+            "Item": "Nuts",
+            "Quantity": 2,
+            "Price": 80,
+            "Buyer": "Artem",
+            "Date": "2023-04-23"
+        }
+    ]
+}
