@@ -1,0 +1,11 @@
+item:
+- samsung
+- apple
+- dell
+- lg
+price:
+  apple: €200
+  dell: €300
+  lg: €400
+  samsung: €100
+quantity: 10
