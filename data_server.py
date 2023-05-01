@@ -10,8 +10,8 @@ def main():
     s = socket(AF_INET, SOCK_STREAM) # Создает сокет TCP
     s.bind((my_address, my_port))
     s.listen(5) # Переходит в режим ожидания запросов;
-    # Одновременно обслуживает не более
-    # 5 запросов.
+                # Одновременно обслуживает не более
+                # 5 запросов.
     while True:
         client, addr = s.accept()
         answer = get_msg(client)
