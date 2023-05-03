@@ -1,10 +1,12 @@
 import logging
 import sys
+
+
 # Создание именованного логгера
 log = logging.getLogger('server')
 
 # Журналирование должно производиться в лог-файл; На стороне сервера необходимо настроить ежедневную ротацию лог-файлов.
-log_file = logging.handlers.TimedRotatingFileHandler('server.log', when='H', interval=24, encoding='utf-8', backupCount=10)
+log_file = log.handlers.TimedRotatingFileHandler('server.log', when='H', interval=24, encoding='utf-8', backupCount=10)
 
 
 # Сообщения лога должны иметь следующий формат: "<дата-время> <уровеньважности> <имямодуля> <сообщение>";

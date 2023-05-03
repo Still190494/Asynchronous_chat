@@ -2,7 +2,12 @@ from socket import *
 import json
 import sys
 from utils import get_msg, send_msg, msg_to_server
+import logging
 
+
+
+
+logger = logging.getLogger('client')
 
 def main():
     try:
@@ -14,7 +19,7 @@ def main():
         my_address = '127.0.0.1'
         my_port = 7777
     except ValueError:
-        print('Порт не может быть меньше "1024" или больше "65535"')
+        logger.critical('Указан не верный порт!!! Порт не может быть меньше "1024" или больше "65535"')
         sys.exit(1)
     s = socket(AF_INET, SOCK_STREAM) # Создать сокет TCP
     s.connect((my_address, my_port)) # Соединиться с сервером
@@ -22,9 +27,9 @@ def main():
     send_msg(s, msg_to_s)
     try:
         answer = get_msg(s)
-        print('Сообщение от сервера: ', answer)
+        logger.info('Сообщение от сервера: ', answer)
     except (ValueError, json.JSONDecodeError):
-        print('Сообщение в неправильном формате')
+        logger.critical('Сообщение в неправильном формате')
     s.close()
 
 
