@@ -4,6 +4,7 @@ import sys
 from utils import get_msg, send_msg, msg_to_client
 import json
 import logging
+import logs.server_log_config
 
 logger = logging.getLogger('server')
 
@@ -16,10 +17,10 @@ def main():
         if my_port < 1024 or my_port > 65535:
             raise ValueError
     except IndexError:
-        logger.critical('Не верно указан порт сервера')
+        logger.critical(f'Не верно указан порт сервера')
         sys.exit(1)
     except ValueError:
-        logger.critical('Порт не может быть меньше "1024" или больше "65535"')
+        logger.critical(f'Порт не может быть меньше "1024" или больше "65535"')
         sys.exit(1)
     try:
         if '-a' in sys.argv:
@@ -27,7 +28,7 @@ def main():
         else:
             my_address = '127.0.0.1'
     except IndexError:
-        logger.critical('Не верно указан адресс сервера')
+        logger.critical(f'Не верно указан адресс сервера')
         sys.exit(1)
     s = socket(AF_INET, SOCK_STREAM) # Создает сокет TCP
     s.bind((my_address, my_port))
@@ -38,12 +39,12 @@ def main():
         client, addr = s.accept()
         try:
             answer = get_msg(client)
-            logger.info("Сообщение клиента", answer)
+            logger.info(f'Сообщение клиента {answer}')
             response_msg = msg_to_client()
             send_msg(client, response_msg)
             client.close()
         except (ValueError, json.JSONDecodeError):
-            logger.critical('Сообщение в неправильном формате')
+            logger.critical(f'Сообщение в неправильном формате')
             client.close()
 
 
