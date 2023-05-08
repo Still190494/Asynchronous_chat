@@ -2,6 +2,7 @@ from socket import *
 import json
 import sys
 from utils import get_msg, send_msg, msg_to_server
+from logs.decor_log import log
 import logging
 import logs.client_log_config
 
@@ -9,7 +10,7 @@ import logs.client_log_config
 
 logger = logging.getLogger('client')
 
-def main():
+def main_client():
     try:
         my_address = sys.argv[1]
         my_port = int(sys.argv[2])
@@ -34,4 +35,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main_client()

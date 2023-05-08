@@ -2,13 +2,14 @@
 from socket import *
 import sys
 from utils import get_msg, send_msg, msg_to_client
+from logs.decor_log import log
 import json
 import logging
 import logs.server_log_config
 
 logger = logging.getLogger('server')
 
-def main():
+def main_server():
     try:
         if '-p' in sys.argv:
             my_port = int(sys.argv[sys.argv.index('-p') + 1])
@@ -49,4 +50,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main_server()

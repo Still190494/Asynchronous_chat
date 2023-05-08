@@ -1,7 +1,14 @@
+import inspect
 import json
 import time
+import sys
+import logging
+import traceback
+from logs.decor_log import log
+
 
 """Сообщение для сервера"""
+@log
 def msg_to_server():
     msg = {
     "action": "authenticate",
@@ -15,6 +22,7 @@ def msg_to_server():
 
 
 """Сообщение для клиента"""
+@log
 def msg_to_client():
     response_msg = {
         "response": 200,
@@ -25,6 +33,7 @@ def msg_to_client():
 
 
 """Получаем и декодим сообщение"""
+@log
 def get_msg(client):
     msg_js = client.recv(1024)
     msg_decode = msg_js.decode('utf-8')
@@ -32,7 +41,8 @@ def get_msg(client):
     return msg
 
 
-''''Энкодим и отправляем сообщение'''
+'''Энкодим и отправляем сообщение'''
+@log
 def send_msg(s, msg):
     js_msg = json.dumps(msg)
     s.send(js_msg.encode('utf-8'))
