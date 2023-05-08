@@ -5,15 +5,27 @@ from utils import get_msg, send_msg, msg_to_server
 from logs.decor_log import log
 import logging
 import logs.client_log_config
+import argparse
 
-
-
+sys.setrecursionlimit(10000)
 logger = logging.getLogger('client')
 
+
+@log
+def create_arg_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('addr', default='127.0.0.1', nargs='?')
+    parser.add_argument('port', default=7777, type=int, nargs='?')
+    return parser
+
+
+
 def main_client():
+    parser = create_arg_parser()
+    namespace = parser.parse_args(sys.argv[1:])
     try:
-        my_address = sys.argv[1]
-        my_port = int(sys.argv[2])
+        my_address = namespace.addr
+        my_port = namespace.port
         if my_port < 1024 or my_port > 65535:
             raise ValueError
     except IndexError:

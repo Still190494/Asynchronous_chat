@@ -6,6 +6,8 @@ import logging
 import traceback
 from logs.decor_log import log
 
+sys.setrecursionlimit(10000)
+
 
 """Сообщение для сервера"""
 @log
