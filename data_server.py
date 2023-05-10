@@ -1,19 +1,32 @@
 # Программа сервера для получения приветствия от клиента и отправки ответа
+import argparse
 from socket import *
 import sys
 from utils import get_msg, send_msg, msg_to_client
+from logs.decor_log import log
 import json
 import logging
 import logs.server_log_config
 
+sys.setrecursionlimit(10000)
 logger = logging.getLogger('server')
 
-def main():
+
+@log
+def create_arg_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', default=7777, type=int, nargs='?')
+    parser.add_argument('-a', default='127.0.0.1', nargs='?')
+    return parser
+
+
+
+def main_server():
+    parser = create_arg_parser()
+    namespace = parser.parse_args(sys.argv[1:])
+    my_address = namespace.a
+    my_port = namespace.p
     try:
-        if '-p' in sys.argv:
-            my_port = int(sys.argv[sys.argv.index('-p') + 1])
-        else:
-            my_port = 7777
         if my_port < 1024 or my_port > 65535:
             raise ValueError
     except IndexError:
@@ -49,4 +62,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main_server()
