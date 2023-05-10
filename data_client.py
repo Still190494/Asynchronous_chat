@@ -12,6 +12,17 @@ logger = logging.getLogger('client')
 
 
 @log
+def message_from_server(message):
+    """Функция - обработчик сообщений других пользователей, поступающих с сервера"""
+    if 'action' in message and message['action'] == 'authenticate':
+        print(f'Получено сообщение от пользователя '
+              f'{message["user"]}:\n{message["msg_text"]}')
+        logger.info(f'Получено сообщение от пользователя '
+                    f'{message["user"]}:\n{message["msg_text"]}')
+    else:
+        logger.error(f'Получено некорректное сообщение с сервера: {message}')
+
+@log
 def create_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('addr', default='127.0.0.1', nargs='?')
@@ -39,10 +50,15 @@ def main_client():
     msg_to_s = msg_to_server()
     send_msg(s, msg_to_s)
     try:
-        answer = get_msg(s)
-        logger.info(f'Сообщение от сервера: {answer}')
-    except (ValueError, json.JSONDecodeError):
-        logger.critical(f'Сообщение в неправильном формате')
+        message_from_server(get_msg(s))
+    except (ConnectionResetError, ConnectionError, ConnectionAbortedError):
+        logger.error(f'Соединение с сервером {my_address} было потеряно.')
+        sys.exit(1)
+    # try:
+    #     answer = get_msg(s)
+    #     logger.info(f'Сообщение от сервера: {answer}')
+    # except (ValueError, json.JSONDecodeError):
+    #     logger.critical(f'Сообщение в неправильном формате')
     s.close()
 
 
