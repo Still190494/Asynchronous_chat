@@ -1,0 +1,60 @@
+2023-05-08 12:59:18,410 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683539958.4099188, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 12:59:53,283 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683539993.2828934, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:00:00,373 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683540000.3730404, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:00:13,076 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683540013.0768838, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:00:19,932 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683540019.9326582, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:00:35,848 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683540035.848585, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:00:37,547 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683540037.547711, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:29:48,060 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683541788.060326, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:30:05,066 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683541805.066472, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:30:09,496 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683541809.4968984, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:30:10,413 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683541810.4133387, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:30:22,593 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683541822.5939054, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:30:33,345 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683541833.3449855, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:30:35,427 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683541835.4270022, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:36:33,695 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683542193.6956174, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:42:08,865 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683542528.8651423, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:42:37,213 CRITICAL data_server.py Порт не может быть меньше "1024" или больше "65535"
+2023-05-08 13:42:41,108 CRITICAL data_server.py Порт не может быть меньше "1024" или больше "65535"
+2023-05-08 13:42:42,647 CRITICAL data_server.py Порт не может быть меньше "1024" или больше "65535"
+2023-05-08 13:43:19,902 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683542599.9021199, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:43:24,913 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683542604.9133728, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:46:25,625 INFO decor_log.py Функция create_arg_parser: вызвана из функции  main_server
+2023-05-08 13:46:25,633 INFO decor_log.py create_arg_parser вернула ArgumentParser(prog='data_server.py', usage=None, description=None, formatter_class=<class 'argparse.HelpFormatter'>, conflict_handler='error', add_help=True)
+2023-05-08 13:46:32,901 INFO decor_log.py Функция get_msg: вызвана из функции  main_server
+2023-05-08 13:46:32,902 INFO decor_log.py get_msg вернула {'action': 'authenticate', 'time': 1683542792.9018657, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:46:32,902 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683542792.9018657, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:46:32,902 INFO decor_log.py Функция msg_to_client: вызвана из функции  main_server
+2023-05-08 13:46:32,902 INFO decor_log.py msg_to_client вернула {'response': 200}
+2023-05-08 13:46:32,903 INFO decor_log.py Функция send_msg: вызвана из функции  main_server
+2023-05-08 13:46:32,903 INFO decor_log.py send_msg вернула None
+2023-05-08 13:49:48,917 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из модуля __main__. Вызов из функции main_server().Вызов из функции main_server
+2023-05-08 13:49:55,202 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=416, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60419)>,), {}. Вызов из модуля utils. Вызов из функции main_server().Вызов из функции main_server
+2023-05-08 13:49:55,202 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683542995.2018983, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:49:55,203 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из модуля utils. Вызов из функции main_server().Вызов из функции main_server
+2023-05-08 13:49:55,203 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=416, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60419)>, {'response': 200}), {}. Вызов из модуля utils. Вызов из функции main_server().Вызов из функции main_server
+2023-05-08 13:54:53,048 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из модуля __main__. Вызов из функции main_server().Вызов из функции main_server
+2023-05-08 13:54:58,835 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543298.8356988, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:55:11,650 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543311.6502974, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:56:02,602 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543362.6014342, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 13:56:23,410 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543383.4100254, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 14:00:07,988 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543607.9875095, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 14:00:15,964 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543615.9637651, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 14:00:29,972 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-08 14:00:33,805 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60475)>,), {}. Вызов из функции main_server
+2023-05-08 14:00:33,805 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543633.8041866, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 14:00:33,805 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из функции main_server
+2023-05-08 14:00:33,806 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60475)>, {'response': 200}), {}. Вызов из функции main_server
+2023-05-08 14:00:38,881 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60476)>,), {}. Вызов из функции main_server
+2023-05-08 14:00:38,881 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543638.8805077, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 14:00:38,881 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из функции main_server
+2023-05-08 14:00:38,882 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60476)>, {'response': 200}), {}. Вызов из функции main_server
+2023-05-08 14:01:48,606 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-08 14:01:52,701 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=180, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60479)>,), {}. Вызов из функции main_server
+2023-05-08 14:01:52,701 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543712.7006373, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 14:01:52,701 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из функции main_server
+2023-05-08 14:01:52,702 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=180, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60479)>, {'response': 200}), {}. Вызов из функции main_server
+2023-05-08 14:02:01,989 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=180, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60480)>,), {}. Вызов из функции main_server
+2023-05-08 14:02:01,989 INFO data_server.py Сообщение клиента {'action': 'authenticate', 'time': 1683543721.9888985, 'user': {'account_name': 'admin', 'password': 'adminpass'}}
+2023-05-08 14:02:01,990 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из функции main_server
+2023-05-08 14:02:01,990 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=180, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 1024), raddr=('127.0.0.1', 60480)>, {'response': 200}), {}. Вызов из функции main_server

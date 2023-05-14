@@ -16,9 +16,9 @@ def msg_to_server():
     "action": "authenticate",
     "time": time.time(),
     "user": {
-        "account_name": "admin",
-        "password": "adminpass"
-        }
+        "account_name": "admin"
+        },
+    "msg_text": "Сообщение клиента"
     }
     return msg
 
