@@ -66,16 +66,6 @@ def process_client_message(message, messages_list, client, clients, names):
         response["error"] = 'Запрос некорректен.'
         send_msg(client, response)
         return
-# @log
-# def process_client_message(message, messages_list, client, clients, names):
-#     logger.debug(f'Разбор сообщения от клиента : {message}')
-#     msg_ok = msg_to_client()
-#     if message['user'] not in names.keys():
-#         names[message['user']] = client
-#         send_msg(client, msg_ok)
-#     elif 'msg_text' in message:
-#         messages_list.append(message)
-#         return
     
 @log
 def create_arg_parser():
@@ -138,46 +128,6 @@ def main_server():
     s.listen(5) # Переходит в режим ожидания запросов;
                 # Одновременно обслуживает не более
                 # 5 запросов.
-    # while True:
-    #     # Ждём подключения, если таймаут вышел, ловим исключение.
-    #     try:
-    #         client, client_address = s.accept()
-    #     except OSError:
-    #         pass
-    #     else:
-    #         logger.info(f'Установлено соедение с ПК {client_address}')
-    #         clients.append(client)
-
-    #     recv_data_lst = []
-    #     send_data_lst = []
-    #     err_lst = []
-    #     # Проверяем на наличие ждущих клиентов
-    #     try:
-    #         if clients:
-    #             recv_data_lst, send_data_lst, err_lst = select.select(clients, clients, [], 0)
-    #     except OSError:
-    #         pass
-
-    #     # принимаем сообщения и если ошибка, исключаем клиента.
-    #     if recv_data_lst:
-    #         for client_with_message in recv_data_lst:
-    #             try:
-    #                 process_client_message(get_msg(client_with_message),
-    #                                        messages, client_with_message, clients, names)
-    #             except Exception:
-    #                 LOGGER.info(f'Клиент {client_with_message.getpeername()} '
-    #                             f'отключился от сервера.')
-    #                 clients.remove(client_with_message)
-
-    #     # Если есть сообщения, обрабатываем каждое.
-    #     for i in messages:
-    #         try:
-    #             process_message(i, names, send_data_lst)
-    #         except Exception:
-    #             LOGGER.info(f'Связь с клиентом с именем {i[DESTINATION]} была потеряна')
-    #             clients.remove(names[i[DESTINATION]])
-    #             del names[i[DESTINATION]]
-    #     messages.clear()
     while True:
         try:
             client, addr = s.accept()
@@ -213,25 +163,6 @@ def main_server():
                 clients.remove(names[i["to_user"]])
                 del names[i["to_user"]]
         messages.clear()
-        # if messages and w_list:
-        #     message = msg_to_client()
-        #     del messages[0]
-        #     for waiting_client in w_list:
-        #         try:
-        #             send_msg(waiting_client, message)
-        #         except:
-        #             logger.info(f'Клиент {waiting_client.getpeername()} отключился от сервера.')
-        #             clients.remove(waiting_client)
-        # try:
-        #     answer = get_msg(client)
-        #     logger.info(f'Сообщение клиента {answer}')
-        #     response_msg = msg_to_client()
-        #     send_msg(client, response_msg)
-        #     client.close()
-        # except (ValueError, json.JSONDecodeError):
-        #     logger.critical(f'Сообщение в неправильном формате')
-        #     client.close()
-
 print('Запущен сервер')
 
 

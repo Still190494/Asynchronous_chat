@@ -9,19 +9,19 @@ from logs.decor_log import log
 sys.setrecursionlimit(10000)
 
 
-"""Сообщение для сервера"""
-@log
-def msg_to_server():
-    text_msg = input('Напишите сообщение: ')
-    to_user = input('Введите пользователя: ')
-    msg = {
-    "action": "authenticate",
-    "time": time.time(),
-    "user": "admin",
-    "to_users": to_user,
-    "msg_text": text_msg
-    }
-    return msg
+# """Сообщение для сервера"""
+# @log
+# def msg_to_server():
+#     text_msg = input('Напишите сообщение: ')
+#     to_user = input('Введите пользователя: ')
+#     msg = {
+#     "action": "authenticate",
+#     "time": time.time(),
+#     "user": "admin",
+#     "to_users": to_user,
+#     "msg_text": text_msg
+#     }
+#     return msg
 
 
 """Сообщение для клиента"""

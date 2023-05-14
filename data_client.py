@@ -13,7 +13,6 @@ import threading
 sys.setrecursionlimit(10000)
 logger = logging.getLogger('client')
 
-
 @log
 def create_presence(account_name):
     """Функция генерирует запрос о присутствии клиента"""
@@ -24,8 +23,6 @@ def create_presence(account_name):
     }
     logger.debug(f'Сформировано {"presence"} сообщение для пользователя {account_name}')
     return out
-
-
 
 @log
 def message_from_server(sock, my_username):
@@ -46,17 +43,6 @@ def message_from_server(sock, my_username):
                 ConnectionResetError, json.JSONDecodeError):
             logger.critical(f'Потеряно соединение с сервером.')
             break
-# @log
-# def message_from_server(socker, username):
-#     message = get_msg(socker)
-#     """Функция - обработчик сообщений других пользователей, поступающих с сервера"""
-#     if 'action' in message and message['action'] == 'authenticate':
-#         print(f'Получено сообщение от пользователя '
-#               f'{message["user"]}:\n{message["msg_text"]}')
-#         logger.info(f'Получено сообщение от пользователя '
-#                     f'{message["user"]}:\n{message["msg_text"]}')
-#     else:
-#         logger.error(f'Получено некорректное сообщение с сервера: {message}')
 
 @log
 def create_arg_parser():
@@ -66,6 +52,7 @@ def create_arg_parser():
     parser.add_argument('-n', '--name', default=None, nargs='?')
     return parser
 
+@log
 def create_message(sock, account_name='admin'):
     """
     Функция запрашивает кому отправить сообщение и само сообщение,
@@ -90,19 +77,8 @@ def create_message(sock, account_name='admin'):
     except:
         logger.critical('Потеряно соединение с сервером.')
         sys.exit(1)
-# def create_message(sock, account_name='admin'):
-#     message_dict = msg_to_server()
-#     logger.debug(f'Сформирован словарь сообщения: {message_dict}')
-#     try:
-#         send_msg(sock, message_dict)
-#         logger.info(f'Отправлено сообщение для пользователя {message_dict["to_users"]}')
-#     except:
-#         logger.critical('Потеряно соединение с сервером.')
-#         sys.exit(1)
 
-
-
-
+@log
 def user_interactive(sock, username):
     while True:
         command = input('Введите команду: ')
@@ -156,14 +132,6 @@ def main_client():
             f'Не удалось подключиться к серверу {my_address}:{my_port}, '
             f'конечный компьютер отверг запрос на подключение.')
         sys.exit(1)
-    # msg_to_s = msg_to_server()
-    # send_msg(s, msg_to_s)
-    # try:
-    #     message_from_server(get_msg(s))
-    # except (ConnectionResetError, ConnectionError, ConnectionAbortedError):
-    #     logger.error(f'Соединение с сервером {my_address} было потеряно.')
-    #     sys.exit(1)
-    
     else:
     # Если соединение с сервером установлено корректно,
     # запускаем клиенский процесс приёма сообщний
@@ -180,13 +148,8 @@ def main_client():
             if receiver.is_alive() and user_interface.is_alive():
                 continue
             break
-    # try:
-    #     answer = get_msg(s)
-    #     logger.info(f'Сообщение от сервера: {answer}')
-    # except (ValueError, json.JSONDecodeError):
-    #     logger.critical(f'Сообщение в неправильном формате')
-    
 
+    
 
 if __name__ == '__main__':
     main_client()
