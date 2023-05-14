@@ -12,13 +12,14 @@ sys.setrecursionlimit(10000)
 """Сообщение для сервера"""
 @log
 def msg_to_server():
+    text_msg = input('Напишите сообщение: ')
+    to_user = input('Введите пользователя: ')
     msg = {
     "action": "authenticate",
     "time": time.time(),
-    "user": {
-        "account_name": "admin"
-        },
-    "msg_text": "Сообщение клиента"
+    "user": "admin",
+    "to_users": to_user,
+    "msg_text": text_msg
     }
     return msg
 
@@ -48,3 +49,12 @@ def get_msg(client):
 def send_msg(s, msg):
     js_msg = json.dumps(msg)
     s.send(js_msg.encode('utf-8'))
+
+'''выход'''
+@log
+def create_exit_message(account_name):
+    return {
+        "action": "exit",
+        "time": time.time(),
+        "user": account_name
+    }

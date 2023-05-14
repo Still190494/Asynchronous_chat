@@ -1,0 +1,135 @@
+2023-05-10 22:18:50,366 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:18:50,586 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:24:33,691 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:24:33,910 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:26:16,660 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:26:16,877 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:27:44,857 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:27:45,067 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:28:16,186 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:28:16,402 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:35:12,099 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:35:12,307 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:35:19,788 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:35:20,005 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:39:41,955 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:39:42,159 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:41:48,182 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:42:57,308 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:07,542 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:47:07,745 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:43,796 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:47:44,014 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:44,214 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:44,428 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:44,631 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:44,846 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:45,046 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:45,263 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:45,477 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:45,681 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:45,883 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:46,099 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:46,314 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:46,514 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:46,731 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:46,944 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:47,158 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:47,374 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:47,577 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:47,780 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:47,997 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:47:48,199 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:48:17,741 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:50:33,569 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:50:36,956 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 54567)
+2023-05-10 22:54:11,655 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:54:11,863 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:54:39,327 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 22:54:41,875 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 54589)
+2023-05-10 22:54:41,876 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:54:51,879 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:55:01,886 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 22:55:11,895 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:00:05,874 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 23:00:08,322 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 54626)
+2023-05-10 23:00:08,323 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 54626)>,), {}. Вызов из функции read_requests
+2023-05-10 23:00:08,323 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:00:18,326 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:00:28,344 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:03:37,114 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 23:03:40,576 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 54639)
+2023-05-10 23:03:40,577 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 54639)>,), {}. Вызов из функции read_requests
+2023-05-10 23:04:37,744 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 23:04:41,427 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 54646)
+2023-05-10 23:04:41,428 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=500, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 54646)>,), {}. Вызов из функции read_requests
+2023-05-10 23:20:01,847 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 23:20:06,165 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 52780)
+2023-05-10 23:20:06,165 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:20:16,169 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:20:26,182 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:20:36,184 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:20:46,186 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:34:44,576 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 23:34:47,448 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 52866)
+2023-05-10 23:34:47,449 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 52866)>,), {}. Вызов из функции read_requests
+2023-05-10 23:34:47,449 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:34:57,464 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:35:07,473 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:36:47,576 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 23:36:57,581 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:37:45,799 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 23:59:32,496 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-10 23:59:35,561 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 53490)
+2023-05-10 23:59:35,562 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:59:45,576 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-10 23:59:55,588 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-11 00:00:05,590 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-11 00:00:15,600 CRITICAL data_server.py Сообщение в неправильном формате
+2023-05-11 00:00:54,455 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 00:00:57,047 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 53497)
+2023-05-11 00:03:20,348 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 00:03:22,896 INFO data_server.py Получен запрос на соединение от ('127.0.0.1', 53526)
+2023-05-11 00:05:46,906 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 00:07:03,787 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 00:08:21,631 INFO utils.py Клиент ('127.0.0.1', 53683) отключился
+2023-05-11 00:32:30,037 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 00:32:33,362 INFO data_server.py Установлено соедение с ('127.0.0.1', 54037)
+2023-05-11 00:32:33,363 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 54037)>,), {}. Вызов из функции main_server
+2023-05-11 00:32:33,363 DEBUG data_server.py Разбор сообщения от клиента : {'action': 'authenticate', 'time': 1683754353.3625352, 'user': {'account_name': 'admin', 'password': 'adminpass', 'msg': 'Сообщение клиента'}}
+2023-05-11 00:32:33,363 INFO data_server.py Клиент ('127.0.0.1', 54037) отключился от сервера.
+2023-05-11 00:50:37,040 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 00:50:39,283 INFO data_server.py Установлено соедение с ('127.0.0.1', 64596)
+2023-05-11 00:50:39,284 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 64596)>,), {}. Вызов из функции main_server
+2023-05-11 00:50:39,284 DEBUG data_server.py Разбор сообщения от клиента : {'action': 'authenticate', 'time': 1683755439.2835183, 'user': {'account_name': 'admin', 'password': 'adminpass'}, 'msg_text': 'Сообщение клиента'}
+2023-05-11 00:50:39,284 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из функции process_client_message
+2023-05-11 00:50:39,285 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 64596)>, {'response': 200}), {}. Вызов из функции process_client_message
+2023-05-11 00:51:10,174 INFO data_server.py Установлено соедение с ('127.0.0.1', 64600)
+2023-05-11 00:51:10,175 INFO data_server.py Клиент ('127.0.0.1', 64596) отключился от сервера.
+2023-05-11 00:51:10,175 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 64600)>,), {}. Вызов из функции main_server
+2023-05-11 00:51:10,175 DEBUG data_server.py Разбор сообщения от клиента : {'action': 'authenticate', 'time': 1683755470.1741402, 'user': {'account_name': 'admin', 'password': 'adminpass'}, 'msg_text': 'Сообщение клиента'}
+2023-05-11 00:51:10,176 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из функции process_client_message
+2023-05-11 00:51:10,177 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 64600)>, {'response': 200}), {}. Вызов из функции process_client_message
+2023-05-11 01:05:52,188 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 01:05:54,819 INFO data_server.py Установлено соедение с ('127.0.0.1', 64712)
+2023-05-11 01:05:54,820 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 64712)>,), {}. Вызов из функции main_server
+2023-05-11 01:05:54,820 DEBUG data_server.py Разбор сообщения от клиента : {'action': 'authenticate', 'time': 1683756354.818761, 'user': {'account_name': 'admin'}, 'msg_text': 'Сообщение клиента'}
+2023-05-11 01:05:54,820 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из функции process_client_message
+2023-05-11 01:05:54,821 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 64712)>, {'response': 200}), {}. Вызов из функции process_client_message
+2023-05-11 01:05:54,821 INFO decor_log.py Была вызвана функция process_client_message c параметрами ({'action': 'authenticate', 'time': 1683756354.818761, 'user': {'account_name': 'admin'}, 'msg_text': 'Сообщение клиента'}, [], <socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 64712)>), {}. Вызов из функции main_server
+2023-05-11 01:06:56,875 INFO data_server.py Установлено соедение с ('127.0.0.1', 64726)
+2023-05-11 01:06:56,875 INFO data_server.py Клиент ('127.0.0.1', 64712) отключился от сервера.
+2023-05-11 01:23:06,294 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 01:23:09,259 INFO data_server.py Установлено соедение с ('127.0.0.1', 63099)
+2023-05-11 01:23:09,260 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 63099)>,), {}. Вызов из функции main_server
+2023-05-11 01:23:09,260 DEBUG data_server.py Разбор сообщения от клиента : {'action': 'authenticate', 'time': 1683757389.2598915, 'user': {'account_name': 'admin'}, 'msg_text': 'Сообщение клиента'}
+2023-05-11 01:23:09,261 INFO decor_log.py Была вызвана функция msg_to_client c параметрами (), {}. Вызов из функции process_client_message
+2023-05-11 01:23:09,262 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 63099)>, {'response': 200}), {}. Вызов из функции process_client_message
+2023-05-11 01:23:09,262 INFO decor_log.py Была вызвана функция process_client_message c параметрами ({'action': 'authenticate', 'time': 1683757389.2598915, 'user': {'account_name': 'admin'}, 'msg_text': 'Сообщение клиента'}, [], <socket.socket fd=504, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 63099)>), {}. Вызов из функции main_server
+2023-05-11 01:25:39,587 INFO decor_log.py Была вызвана функция create_arg_parser c параметрами (), {}. Вызов из функции main_server
+2023-05-11 01:25:43,789 INFO data_server.py Установлено соедение с ('127.0.0.1', 63121)
+2023-05-11 01:25:43,790 INFO decor_log.py Была вызвана функция get_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 63121)>,), {}. Вызов из функции main_server
+2023-05-11 01:25:43,790 DEBUG data_server.py Разбор сообщения от клиента : {'action': 'authenticate', 'time': 1683757543.7894661, 'user': {'account_name': 'admin'}, 'msg_text': 'Сообщение клиента'}
+2023-05-11 01:25:43,791 INFO decor_log.py Была вызвана функция msg_to_server c параметрами (), {}. Вызов из функции process_client_message
+2023-05-11 01:25:43,792 INFO decor_log.py Была вызвана функция send_msg c параметрами (<socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 63121)>, {'action': 'authenticate', 'time': 1683757543.7914646, 'user': {'account_name': 'admin'}, 'msg_text': 'Сообщение клиента'}), {}. Вызов из функции process_client_message
+2023-05-11 01:25:43,792 INFO decor_log.py Была вызвана функция process_client_message c параметрами ({'action': 'authenticate', 'time': 1683757543.7894661, 'user': {'account_name': 'admin'}, 'msg_text': 'Сообщение клиента'}, [], <socket.socket fd=496, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 7777), raddr=('127.0.0.1', 63121)>), {}. Вызов из функции main_server
