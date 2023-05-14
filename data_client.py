@@ -21,7 +21,7 @@ def create_presence(account_name):
         "time": time.time(),
         "user": account_name
     }
-    logger.debug(f'Сформировано {"presence"} сообщение для пользователя {account_name}')
+    logger.info(f'Сформировано сообщение для пользователя {account_name}')
     return out
 
 @log
@@ -81,7 +81,7 @@ def create_message(sock, account_name='admin'):
 @log
 def user_interactive(sock, username):
     while True:
-        command = input('Введите команду: ')
+        command = input('Введите команду: message(написаль сообщение) или exit(выйти) ')
         if command == 'message':
             create_message(sock, username)
         elif command == 'exit':
@@ -92,7 +92,7 @@ def user_interactive(sock, username):
             time.sleep(0.5)
             break
         else:
-            print('Команда не распознана, попробойте снова. help - вывести поддерживаемые команды.')
+            print('Команда не распознана')
 
 
 def main_client():
