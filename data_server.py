@@ -2,7 +2,7 @@
 import argparse
 from socket import *
 import sys
-from utils import get_msg, send_msg, msg_to_client, msg_to_server
+from utils import get_msg, send_msg, msg_to_client
 from logs.decor_log import log
 import json
 import logging
