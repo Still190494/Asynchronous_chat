@@ -1,7 +1,7 @@
 from socket import *
 import json
 import sys
-from utils import get_msg, send_msg, msg_to_server, create_exit_message
+from utils import get_msg, send_msg, create_exit_message
 from logs.decor_log import log
 import logging
 import logs.client_log_config
