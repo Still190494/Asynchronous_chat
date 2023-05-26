@@ -4,6 +4,7 @@ from socket import *
 import sys
 from utils import get_msg, send_msg, msg_to_client
 from logs.decor_log import log
+from descriptors import DescriptPort
 import json
 import logging
 import logs.server_log_config
@@ -97,6 +98,7 @@ def create_arg_parser():
 #             f'отправка сообщения невозможна.')
 
 class Server():
+    my_port = DescriptPort()
     def __init__(self, my_address, my_port):
         self.my_address = my_address
         self.my_port = my_port
@@ -105,15 +107,6 @@ class Server():
         self.names = dict()   
 
     def init_socket(self):
-        try:
-            if self.my_port < 1024 or self.my_port > 65535:
-                raise ValueError
-        except IndexError:
-            logger.critical(f'Не верно указан порт сервера')
-            sys.exit(1)
-        except ValueError:
-            logger.critical(f'Порт не может быть меньше "1024" или больше "65535"')
-            sys.exit(1)
         try:
             if '-a' in sys.argv:
                 self.my_address = sys.argv[sys.argv.index('-a') + 1]
