@@ -125,13 +125,11 @@ class Server():
         self.s = socket(AF_INET, SOCK_STREAM) # Создает сокет TCP
         self.s.bind((self.my_address, self.my_port))
         self.s.settimeout(0.5)
-        self.s.listen(5) # Переходит в режим ожидания запросов;
-                    # Одновременно обслуживает не более
-                    # 5 запросов.
+        self.s.listen()
 
 
     @log
-    def process_message(self, message, names, listen_socks):
+    def process_message(self, message, listen_socks):
         """
         Функция адресной отправки сообщения определённому клиенту. Принимает словарь сообщение,
         список зарегистрированых пользователей и слушающие сокеты. Ничего не возвращает.
@@ -153,7 +151,7 @@ class Server():
 
 
     @log
-    def process_client_message(self, message, messages_list, client, clients, names):
+    def process_client_message(self, message, client,):
         """
         Обработчик сообщений от клиентов, принимает словарь - сообщение от клиента,
         проверяет корректность, отправляет словарь-ответ в случае необходимости.
@@ -182,11 +180,11 @@ class Server():
         elif "action" in message and message["action"] == 'message' and \
                 "to_user" in message and "time" in message \
                 and "from" in message and "msg_text" in message:
-            self.messages_list.append(message)
+            self.messages.append(message)
             return
         # Если клиент выходит
         elif "action" in message and message["action"] == "exit" and "user" in message:
-            self.clients.remove(names[message["user"]])
+            self.clients.remove(self.names[message["user"]])
             self.names[message["user"]].close()
             del self.names[message["user"]]
             return
@@ -206,13 +204,13 @@ class Server():
 
         while True:
             try:
-                self.client, self.addr = self.s.accept()
+                client, addr = self.s.accept()
             except OSError:
                 pass
             else:
-                logger.info(f'Установлено соедение с {self.addr}')
-                print("Получен запрос на соединение от %s" % str(self.addr))
-                self.clients.append(self.client)
+                logger.info(f'Установлено соедение с {addr}')
+                print("Получен запрос на соединение от %s" % str(addr))
+                self.clients.append(client)
 
             recv_list = []
             send_list = []
@@ -225,15 +223,14 @@ class Server():
             if recv_list:
                 for client_with_message in recv_list:
                     try:
-                        self.process_client_message(get_msg(client_with_message),
-                                            self.messages, client_with_message, self.clients, self.names)
+                        self.process_client_message(get_msg(client_with_message), client_with_message)
                     except:
                         logger.info(f'Клиент {client_with_message.getpeername()} '
                                     f'отключился от сервера.')
                         self.clients.remove(client_with_message)
             for i in self.messages:
                 try:
-                    self.process_message(i, self.names, send_list)
+                    self.process_message(i, send_list)
                 except Exception:
                     logger.info(f'Связь с клиентом с именем {i["to_user"]} была потеряна')
                     self.clients.remove(self.names[i["to_user"]])
