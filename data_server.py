@@ -1,15 +1,24 @@
 # Программа сервера для получения приветствия от клиента и отправки ответа
 import argparse
+import configparser
 import socket
 import sys
+import os
+import threading
 from utils import get_msg, send_msg, msg_to_client
 from logs.decor_log import log
 from descriptors import DescriptPort
+from server_db import ServerDB
 import json
 import logging
 import logs.server_log_config
 import select
 from metaclasses import ServerVerifier
+from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtCore import QTimer
+# from server_gui import MainWindow, gui_create_model, HistoryWindow, create_stat_model, ConfigWindow
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
+import os.path
 
 sys.setrecursionlimit(10000)
 logger = logging.getLogger('server')
@@ -20,16 +29,20 @@ def create_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', default=7777, type=int, nargs='?')
     parser.add_argument('-a', default='127.0.0.1', nargs='?')
-    return parser
+    namespace = parser.parse_args(sys.argv[1:])
+    my_address = namespace.a
+    my_port = namespace.p
+    return my_address, my_port
 
 class Server(metaclass=ServerVerifier):
     my_port = DescriptPort()
-    def __init__(self, my_address, my_port):
+    def __init__(self, my_address, my_port, database):
         self.my_address = my_address
         self.my_port = my_port
         self.clients = []
         self.messages = []
-        self.names = dict()   
+        self.names = dict()
+        self.database = database   
 
 
     def init_socket(self):
@@ -48,11 +61,6 @@ class Server(metaclass=ServerVerifier):
         # Начинаем слушать сокет.
         self.my_server = my_server
         self.my_server.listen()
-        # self.s = socket(AF_INET, SOCK_STREAM) # Создает сокет TCP
-        # self.s.bind((self.my_address, self.my_port))
-        # self.s.settimeout(0.5)
-        # self.s.listen()
-
 
     @log
     def process_message(self, message, listen_socks):
@@ -86,7 +94,10 @@ class Server(metaclass=ServerVerifier):
             # регистрируем, иначе отправляем ответ и завершаем соединение.
             if message["user"] not in self.names.keys():
                 self.names[message["user"]] = client
+                client_ip, client_port = client.getpeername()
                 resp_ok = msg_to_client()
+                self.database.user_login(
+                    message["user"], client_ip, client_port)
                 send_msg(client, resp_ok)
             else:
                 response = {"response": 400,
@@ -103,13 +114,50 @@ class Server(metaclass=ServerVerifier):
                 "to_user" in message and "time" in message \
                 and "from" in message and "msg_text" in message:
             self.messages.append(message)
+            self.database.process_message(
+                message['from'], message['to'])
             return
         # Если клиент выходит
         elif "action" in message and message["action"] == "exit" and "user" in message:
+            self.database.user_logout(message["user"])
             self.clients.remove(self.names[message["user"]])
             self.names[message["user"]].close()
             del self.names[message["user"]]
             return
+        
+        # Если это запрос контакт-листа
+        elif "action" in message and message["action"] == 'get_contacts' and "user" in message and \
+                self.names[message["user"]] == client:
+            response = {'response':202}
+            response['data_list'] = self.database.get_contacts(message["user"])
+            send_msg(client, response)
+
+        # Если это добавление контакта
+        elif "action" in message and message["action"] == 'add_contacts' and "user" in message and \
+                self.names[message["user"]] == client:
+            self.database.add_contact(message["user"], message["user"])
+            response = {'response':200}
+            send_msg(client, response)
+
+        # Если это удаление контакта
+        elif "action" in message and message["action"] == 'remove_contacts' and "user" in message \
+                and self.names[message["user"]] == client:
+            self.database.remove_contact(message["user"], message["user"])
+            response = {'response':200}
+            send_msg(client, response)
+
+        # Если это запрос известных пользователей
+        elif "action" in message and message["action"] == 'get_user' and "user" in message \
+                and self.names[message["user"]] == client:
+            response = {'response':202}
+            response['data_list'] = [user[0]
+                                   for user in self.database.users_list()]
+            send_msg(client, response)
+
+
+
+
+
         # Иначе отдаём Bad request
         else:
             response = {"response": 400,
@@ -120,7 +168,7 @@ class Server(metaclass=ServerVerifier):
             return
         
 
-    def main_server(self):
+    def run(self):
         self.init_socket()
         while True:
             try:
@@ -146,6 +194,11 @@ class Server(metaclass=ServerVerifier):
                     except:
                         logger.info(f'Клиент {client_with_message.getpeername()} '
                                     f'отключился от сервера.')
+                        for name in self.names:
+                            if self.names[name] == client_with_message:
+                                self.database.user_logout(name)
+                                del self.names[name]
+                                break
                         self.clients.remove(client_with_message)
             for i in self.messages:
                 try:
@@ -153,18 +206,29 @@ class Server(metaclass=ServerVerifier):
                 except Exception:
                     logger.info(f'Связь с клиентом с именем {i["to_user"]} была потеряна')
                     self.clients.remove(self.names[i["to_user"]])
+                    self.database.user_logout(i["to_user"])
                     del self.names[i["to_user"]]
             self.messages.clear()
     print('Запущен сервер')
 
 
 def main():
-    parser = create_arg_parser()
-    namespace = parser.parse_args(sys.argv[1:])
-    my_address = namespace.a
-    my_port = namespace.p
-    my_server = Server(my_address, my_port)
-    my_server.main_server()
+    config = configparser.ConfigParser()
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    config.read(f"{dir_path}/{'server.ini'}")
+    # Загрузка параметров командной строки, если нет параметров, то задаём
+    # значения по умоланию.
+    my_address, my_port = create_arg_parser()
+    # Инициализация базы данных
+    database = ServerDB(
+        os.path.join(
+            config['SETTINGS']['database_path'],
+            config['SETTINGS']['database_file']))
+    # Создание экземпляра класса - сервера и его запуск:
+    my_server = Server(my_address, my_port, database)
+    my_server.daemon = True
+    my_server.start()
+    # my_server.run()
 
 
 if __name__ == '__main__':
