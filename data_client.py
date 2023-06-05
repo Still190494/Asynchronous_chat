@@ -9,16 +9,18 @@ import argparse
 import time
 import threading
 from metaclasses import ClientVerifier
-
+from client_db import ClientDB
 
 sys.setrecursionlimit(10000)
 logger = logging.getLogger('client')
-
+sock_lock = threading.Lock()
+database_lock = threading.Lock()
 
 class ClientSender(threading.Thread, metaclass=ClientVerifier):
-    def __init__(self, account_name, sock):
+    def __init__(self, account_name, sock, database):
         self.account_name = account_name
         self.sock = sock
+        self.database = database
         super().__init__()
 
 
@@ -47,39 +49,81 @@ class ClientSender(threading.Thread, metaclass=ClientVerifier):
             'msg_text': message
         }
         logger.debug(f'Сформирован словарь сообщения: {message_dict}')
-        try:
-            send_msg(self.sock, message_dict)
-            logger.info(f'Отправлено сообщение для пользователя {to_user}')
-        except:
-            logger.critical('Потеряно соединение с сервером.')
-            exit(1)
+        # Сохраняем сообщения для истории
+        with database_lock:
+            self.database.save_message(self.account_name , to_user , message)
+        with sock_lock:
+            try:
+                send_msg(self.sock, message_dict)
+                logger.info(f'Отправлено сообщение для пользователя {to_user}')
+            except:
+                logger.critical('Потеряно соединение с сервером.')
+                exit(1)
 
 
     
     def run(self):
+        self.print_help()
         while True:
-            command = input('Введите команду: message(написаль сообщение) или exit(выйти) ')
+            command = input('Введите команду: ')
             if command == 'message':
                 self.create_message()
             elif command == 'exit':
-                try:
-                    send_msg(self.sock, self.create_exit_message())
-                except:
-                    pass
-                print('Завершение соединения.')
-                logger.info('Завершение работы по команде пользователя.')
+                with sock_lock:
+                    try:
+                        send_msg(self.sock, self.create_exit_message())
+                    except:
+                        pass
+                    print('Завершение соединения.')
+                    logger.info('Завершение работы по команде пользователя.')
                 # Задержка неоходима, чтобы успело уйти сообщение о выходе
                 time.sleep(0.5)
                 break
+            # Редактирование контактов
+            elif command == 'edit':
+                self.edit_contacts()
+            # Список контактов
+            elif command == 'contacts':
+                with database_lock:
+                    contacts_list = self.database.get_contacts()
+                for contact in contacts_list:
+                    print(contact)
             else:
                 print('Команда не распознана')
 
 
+    def print_help(self):
+        print('Поддерживаемые команды:')
+        print('message - отправить сообщение. Кому и текст будет запрошены отдельно.')
+        print('contacts - список контактов')
+        print('edit - редактирование списка контактов')
+        print('exit - выход из программы')
+
+    # Функция изменеия контактов
+    def edit_contacts(self):
+        ans = input('Для удаления введите del, для добавления add: ')
+        if ans == 'del':
+            edit = input('Введите имя удаляемного контакта: ')
+            with database_lock:
+                if self.database.check_contact(edit):
+                    self.database.del_contact(edit)
+                else:
+                    logger.error('Попытка удаления несуществующего контакта.')
+        elif ans == 'add':
+            # Проверка на возможность такого контакта
+            edit = input('Введите имя создаваемого контакта: ')
+            if self.database.check_user(edit):
+                with database_lock:
+                    self.database.add_contact(edit)
+                with sock_lock:
+                    add_contact(self.sock, self.account_name, edit)
+
 
 class ClientReader(threading.Thread, metaclass=ClientVerifier):
-    def __init__(self, account_name, sock):
+    def __init__(self, account_name, sock, database):
         self.account_name = account_name
         self.sock = sock
+        self.database = database
         super().__init__()
 
 
@@ -87,23 +131,46 @@ class ClientReader(threading.Thread, metaclass=ClientVerifier):
     def run(self):
         """Функция - обработчик сообщений других пользователей, поступающих с сервера"""
         while True:
-            try:
-                message = get_msg(self.sock)
-                if 'action' in message and message['action'] == 'message' and \
-                        'from' in message and 'to_user' in message \
-                        and 'msg_text' in message and message['to_user'] == self.account_name:
-                    print(f'\nПолучено сообщение от пользователя {message["from"]}:'
-                        f'\n{message["msg_text"]}')
-                    logger.info(f'Получено сообщение от пользователя {message["from"]}:'
-                                f'\n{message["msg_text"]}')
-                else:
-                    logger.error(f'Получено некорректное сообщение с сервера: {message}')
-            except (OSError, ConnectionError, ConnectionAbortedError,
-                    ConnectionResetError, json.JSONDecodeError):
-                logger.critical(f'Потеряно соединение с сервером.')
-                break
+            time.sleep(1)
+            with sock_lock:
+                try:
+                    message = get_msg(self.sock)
+                    if 'action' in message and message['action'] == 'message' and \
+                            'from' in message and 'to_user' in message \
+                            and 'msg_text' in message and message['to_user'] == self.account_name:
+                        print(f'\nПолучено сообщение от пользователя {message["from"]}:'
+                            f'\n{message["msg_text"]}')
+                        logger.info(f'Получено сообщение от пользователя {message["from"]}:'
+                                    f'\n{message["msg_text"]}')
+                        with database_lock:
+                            try:
+                                self.database.save_message(message['from'], self.account_name, message["msg_text"])
+                            except:
+                                logger.error('Ошибка взаимодействия с базой данных')
+                    else:
+                        logger.error(f'Получено некорректное сообщение с сервера: {message}')
+                except (OSError, ConnectionError, ConnectionAbortedError,
+                        ConnectionResetError, json.JSONDecodeError):
+                    logger.critical(f'Потеряно соединение с сервером.')
+                    break
 
-
+# Функция добавления пользователя в контакт лист
+def add_contact(sock, username, contact):
+    logger.debug(f'Создание контакта {contact}')
+    req = {
+        'action': 'add_contact',
+        'time': time.time(),
+        'user': username,
+        'contact': contact
+    }
+    send_msg(sock, req)
+    ans = get_msg(sock)
+    if 'response' in ans and ans['response'] == 200:
+        pass
+    else:
+        return f'Ошибка создания контакта'
+    print('Удачное создание контакта.')
+    
 @log
 def create_presence(account_name):
     """Функция генерирует запрос о присутствии клиента"""
@@ -128,6 +195,47 @@ def create_arg_parser():
     client_name = namespace.name
     return my_address, my_port, client_name
 
+# Функция запроса списка известных пользователей
+def user_list_request(sock, username):
+    logger.debug(f'Запрос списка известных пользователей {username}')
+    req = {
+        'action': 'get_users',
+        'time': time.time(),
+        'user': username
+    }
+    send_msg(sock, req)
+    ans = get_msg(sock)
+    if 'response' in ans and ans['response'] == 202:
+        return ans['data_list']
+    else:
+        return f'ServerError'
+    
+# Функция запрос контакт листа
+def contacts_list_request(sock, name):
+    logger.debug(f'Запрос контакт листа для пользователся {name}')
+    req = {
+        'action': 'get_contacts',
+        'time': time.time(),
+        'user': name
+    }
+    logger.debug(f'Сформирован запрос {req}')
+    send_msg(sock, req)
+    ans = get_msg(sock)
+    logger.debug(f'Получен ответ {ans}')
+    if 'response' in ans and ans['response'] == 202:
+        return ans['data_list']
+    else:
+        return f'ServerError'    
+
+def database_load(sock, database, username):
+    # Загружаем список известных пользователей
+    users_list = user_list_request(sock, username)
+    database.add_users(users_list)
+
+    # Загружаем список контактов
+    contacts_list = contacts_list_request(sock, username)
+    for contact in contacts_list:
+        database.add_contact(contact)
 
 def main_client():
     my_address, my_port, client_name = create_arg_parser()
@@ -150,6 +258,7 @@ def main_client():
         f'порт: {my_port}, имя пользователя: {client_name}')
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Создать сокет TCP
+        time.sleep(1)
         s.connect((my_address, my_port)) # Соединиться с сервером
         send_msg(s, create_presence(client_name))
         answer = get_msg(s)
@@ -164,13 +273,15 @@ def main_client():
             f'конечный компьютер отверг запрос на подключение.')
         exit(1)
     else:
+        database = ClientDB(client_name)
+        database_load(s, database, client_name)
     # Если соединение с сервером установлено корректно,
     # запускаем клиенский процесс приёма сообщний
-        receiver = ClientReader(client_name, s)
+        receiver = ClientReader(client_name, s, database)
         receiver.daemon = True
         receiver.start()
     # затем запускаем отправку сообщений и взаимодействие с пользователем.
-        user_interface = ClientSender(client_name, s)
+        user_interface = ClientSender(client_name, s, database)
         user_interface.daemon = True
         user_interface.start()
         logger.debug('Запущены процессы')
@@ -184,155 +295,5 @@ def main_client():
 
 
 
-
-
-# class Client():
-#     def __init__(self, my_address, my_port, client_name):
-#         self.my_address = my_address
-#         self.my_port = my_port
-#         self.client_name = client_name
-
-
-#     @log
-#     def create_presence(self, account_name):
-#         """Функция генерирует запрос о присутствии клиента"""
-#         out = {
-#             "action": "presence",
-#             "time": time.time(),
-#             "user": account_name
-#         }
-#         logger.info(f'Сформировано сообщение для пользователя {account_name}')
-#         return out
-
-
-#     @log
-#     def create_message(self, sock, account_name='admin'):
-#         """
-#         Функция запрашивает кому отправить сообщение и само сообщение,
-#         и отправляет полученные данные на сервер
-#         """
-#         to_user = input('Введите получателя сообщения: ')
-#         message = input('Введите сообщение для отправки: ')
-#         message_dict = {
-#             'action': 'message',
-#             'from': account_name,
-#             'to_user': to_user,
-#             'time': time.time(),
-#             'msg_text': message
-#         }
-#         logger.debug(f'Сформирован словарь сообщения: {message_dict}')
-#         try:
-#             send_msg(sock, message_dict)
-#             logger.info(f'Отправлено сообщение для пользователя {to_user}')
-#         except:
-#             logger.critical('Потеряно соединение с сервером.')
-#             sys.exit(1)
-
-
-#     @log
-#     def user_interactive(self, sock, username):
-#         while True:
-#             command = input('Введите команду: message(написаль сообщение) или exit(выйти) ')
-#             if command == 'message':
-#                 self.create_message(sock, username)
-#             elif command == 'exit':
-#                 send_msg(sock, create_exit_message(username))
-#                 print('Завершение соединения.')
-#                 logger.info('Завершение работы по команде пользователя.')
-#                 # Задержка неоходима, чтобы успело уйти сообщение о выходе
-#                 time.sleep(0.5)
-#                 break
-#             else:
-#                 print('Команда не распознана')
-
-
-#     @log
-#     def message_from_server(self, sock, client_name):
-#         """Функция - обработчик сообщений других пользователей, поступающих с сервера"""
-#         while True:
-#             try:
-#                 message = get_msg(sock)
-#                 if 'action' in message and message['action'] == 'message' and \
-#                         'from' in message and 'to_user' in message \
-#                         and 'msg_text' in message and message['to_user'] == client_name:
-#                     print(f'\nПолучено сообщение от пользователя {message["from"]}:'
-#                         f'\n{message["msg_text"]}')
-#                     logger.info(f'Получено сообщение от пользователя {message["from"]}:'
-#                                 f'\n{message["msg_text"]}')
-#                 else:
-#                     logger.error(f'Получено некорректное сообщение с сервера: {message}')
-#             except (OSError, ConnectionError, ConnectionAbortedError,
-#                     ConnectionResetError, json.JSONDecodeError):
-#                 logger.critical(f'Потеряно соединение с сервером.')
-#                 break
-
-
-#     def main_client(self):
-#         try:
-#             if self.my_port < 1024 or self.my_port > 65535:
-#                 raise ValueError
-#         except IndexError:
-#             self.my_address = '127.0.0.1'
-#             self.my_port = 7777
-#         except ValueError:
-#             logger.critical(f'Указан не верный порт!!! Порт не может быть меньше "1024" или больше "65535"')
-#             sys.exit(1)
-#         if not self.client_name:
-#             self.client_name = input('Введите имя пользователя: ')
-#         try:
-#             self.s = socket(AF_INET, SOCK_STREAM) # Создать сокет TCP
-#             self.s.connect((self.my_address, self.my_port)) # Соединиться с сервером
-#             send_msg(self.s, self.create_presence(self.client_name))
-#             answer = get_msg(self.s)
-#             logger.info(f'Установлено соединение с сервером. Ответ сервера: {answer}')
-#             print(f'Установлено соединение с сервером.')
-#             print(f'Запущен клиент с парамертами: адрес сервера: {self.my_address}, '
-#             f'порт: {self.my_port}, имя пользователя: {self.client_name}')
-#             logger.info(
-#             f'Запущен клиент с парамертами: адрес сервера: {self.my_address}, '
-#             f'порт: {self.my_port}, имя пользователя: {self.client_name}')
-#         except json.JSONDecodeError:
-#             logger.error('Не удалось декодировать полученную Json строку.')
-#             sys.exit(1)
-#         except (ConnectionRefusedError, ConnectionError):
-#             logger.critical(
-#                 f'Не удалось подключиться к серверу {self.my_address}:{self.my_port}, '
-#                 f'конечный компьютер отверг запрос на подключение.')
-#             sys.exit(1)
-#         else:
-#         # Если соединение с сервером установлено корректно,
-#         # запускаем клиенский процесс приёма сообщний
-#             receiver = threading.Thread(target=self.message_from_server, args=(self.s, self.client_name))
-#             receiver.daemon = True
-#             receiver.start()
-#         # затем запускаем отправку сообщений и взаимодействие с пользователем.
-#             user_interface = threading.Thread(target=self.user_interactive, args=(self.s, self.client_name))
-#             user_interface.daemon = True
-#             user_interface.start()
-#             logger.debug('Запущены процессы')
-#             while True:
-#                 time.sleep(1)
-#                 if receiver.is_alive() and user_interface.is_alive():
-#                     continue
-#                 break
-
-
-# @log
-# def create_arg_parser():
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument('addr', default='127.0.0.1', nargs='?')
-#     parser.add_argument('port', default=7777, type=int, nargs='?')
-#     parser.add_argument('-n', '--name', default=None, nargs='?')
-#     return parser
-
-
-# def main():
-#     parser = create_arg_parser()
-#     namespace = parser.parse_args(sys.argv[1:])
-#     my_address = namespace.addr
-#     my_port = namespace.port
-#     client_name = namespace.name
-#     my_client = Client(my_address, my_port, client_name)
-#     my_client.main_client()
 if __name__ == '__main__':
     main_client()

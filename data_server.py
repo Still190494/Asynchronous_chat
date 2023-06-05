@@ -220,12 +220,14 @@ def main():
         config['SETTINGS']['Default_port'], config['SETTINGS']['Listen_Address'])
     # Инициализация базы данных
     database = ServerDB(
-        os.path.join(os.path.dirname(__file__), "server_db.db3"))
+        os.path.join(
+            config['SETTINGS']['Database_path'],
+            config['SETTINGS']['Database_file']))
     # Создание экземпляра класса - сервера и его запуск:
     my_server = Server(my_address, my_port, database)
-    my_server.daemon = True
-    my_server.start()
-    # my_server.run()
+    # my_server.daemon = True
+    # my_server.start()
+    my_server.run()
 
 
 if __name__ == '__main__':
