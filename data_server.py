@@ -14,10 +14,10 @@ import logging
 import logs.server_log_config
 import select
 from metaclasses import ServerVerifier
-from PyQt5.QtWidgets import QApplication, QMessageBox
-from PyQt5.QtCore import QTimer
-# from server_gui import MainWindow, gui_create_model, HistoryWindow, create_stat_model, ConfigWindow
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+# from PyQt5.QtWidgets import QApplication, QMessageBox
+# from PyQt5.QtCore import QTimer
+# # from server_gui import MainWindow, gui_create_model, HistoryWindow, create_stat_model, ConfigWindow
+# from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import os.path
 
 sys.setrecursionlimit(10000)
@@ -25,25 +25,25 @@ logger = logging.getLogger('server')
 
    
 @log
-def create_arg_parser():
+def create_arg_parser(default_port, default_address):
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', default=7777, type=int, nargs='?')
-    parser.add_argument('-a', default='127.0.0.1', nargs='?')
+    parser.add_argument('-p', default=default_port, type=int, nargs='?')
+    parser.add_argument('-a', default=default_address, nargs='?')
     namespace = parser.parse_args(sys.argv[1:])
     my_address = namespace.a
     my_port = namespace.p
     return my_address, my_port
 
-class Server(metaclass=ServerVerifier):
+class Server(threading.Thread, metaclass=ServerVerifier):
     my_port = DescriptPort()
     def __init__(self, my_address, my_port, database):
+        super().__init__()
         self.my_address = my_address
         self.my_port = my_port
         self.clients = []
         self.messages = []
         self.names = dict()
         self.database = database   
-
 
     def init_socket(self):
         try:
@@ -57,7 +57,6 @@ class Server(metaclass=ServerVerifier):
         my_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         my_server.bind((self.my_address, self.my_port))
         my_server.settimeout(0.5)
-
         # Начинаем слушать сокет.
         self.my_server = my_server
         self.my_server.listen()
@@ -101,8 +100,7 @@ class Server(metaclass=ServerVerifier):
                 send_msg(client, resp_ok)
             else:
                 response = {"response": 400,
-                        "error": None
-                        }
+                        "error": None}
                 response["error"] = 'Имя пользователя уже занято.'
                 send_msg(client, response)
                 self.clients.remove(client)
@@ -218,12 +216,11 @@ def main():
     config.read(f"{dir_path}/{'server.ini'}")
     # Загрузка параметров командной строки, если нет параметров, то задаём
     # значения по умоланию.
-    my_address, my_port = create_arg_parser()
+    my_address, my_port = create_arg_parser(
+        config['SETTINGS']['Default_port'], config['SETTINGS']['Listen_Address'])
     # Инициализация базы данных
     database = ServerDB(
-        os.path.join(
-            config['SETTINGS']['database_path'],
-            config['SETTINGS']['database_file']))
+        os.path.join(os.path.dirname(__file__), "server_db.db3"))
     # Создание экземпляра класса - сервера и его запуск:
     my_server = Server(my_address, my_port, database)
     my_server.daemon = True
