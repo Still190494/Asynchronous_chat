@@ -163,7 +163,7 @@ class ServerDB:
         user = self.session.query(self.Client_table).filter_by(name=username).one()
 
         # Запрашиваем его список контактов
-        query = self.session.query(self.Contact_list, self.Client_table.username). \
+        query = self.session.query(self.Contact_list, self.Client_table.name). \
             filter_by(user=user.id). \
             join(self.Client_table, self.Contact_list.contact == self.Client_table.id)
 

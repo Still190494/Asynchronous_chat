@@ -20,10 +20,10 @@ from metaclasses import ServerVerifier
 # from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import os.path
 
-sys.setrecursionlimit(10000)
+
 logger = logging.getLogger('server')
 
-   
+
 @log
 def create_arg_parser(default_port, default_address):
     parser = argparse.ArgumentParser()
@@ -43,7 +43,7 @@ class Server(threading.Thread, metaclass=ServerVerifier):
         self.clients = []
         self.messages = []
         self.names = dict()
-        self.database = database   
+        self.database = database
 
     def init_socket(self):
         try:
@@ -67,11 +67,11 @@ class Server(threading.Thread, metaclass=ServerVerifier):
         Функция адресной отправки сообщения определённому клиенту. Принимает словарь сообщение,
         список зарегистрированых пользователей и слушающие сокеты. Ничего не возвращает.
         """
-        if message["to_user"] in self.names and self.names[message["to_user"]] in listen_socks:
-            send_msg(self.names[message["to_user"]], message)
-            logger.info(f'Отправлено сообщение пользователю {message["to_user"]} '
+        if message['to'] in self.names and self.names[message['to']] in listen_socks:
+            send_msg(self.names[message['to']], message)
+            logger.info(f'Отправлено сообщение пользователю {message["to"]} '
                         f'от пользователя {message["from"]}.')
-        elif message["to_user"] in self.names and self.names[message["to_user"]] not in listen_socks:
+        elif message['to'] in self.names and self.names[message['to']] not in listen_socks:
             raise ConnectionError
         else:
             logger.error(
@@ -80,7 +80,7 @@ class Server(threading.Thread, metaclass=ServerVerifier):
 
 
     @log
-    def process_client_message(self, message, client,):
+    def process_client_message(self, message, client):
         """
         Обработчик сообщений от клиентов, принимает словарь - сообщение от клиента,
         проверяет корректность, отправляет словарь-ответ в случае необходимости.
@@ -91,38 +91,39 @@ class Server(threading.Thread, metaclass=ServerVerifier):
                 "time" in message and "user" in message:
             # Если такой пользователь ещё не зарегистрирован,
             # регистрируем, иначе отправляем ответ и завершаем соединение.
-            if message["user"] not in self.names.keys():
-                self.names[message["user"]] = client
+            if message["user"]['account_name'] not in self.names.keys():
+                self.names[message["user"]['account_name']] = client
                 client_ip, client_port = client.getpeername()
-                resp_ok = msg_to_client()
+                # resp_ok = msg_to_client()
                 self.database.user_login(
-                    message["user"], client_ip, client_port)
+                    message["user"]['account_name'], client_ip, client_port)
+                resp_ok = {'response': 200}
                 send_msg(client, resp_ok)
             else:
                 response = {"response": 400,
-                        "error": None}
+                            "error": None}
                 response["error"] = 'Имя пользователя уже занято.'
                 send_msg(client, response)
                 self.clients.remove(client)
                 client.close()
-            return   
+            return
         # Если это сообщение, то добавляем его в очередь сообщений.
         # Ответ не требуется.
-        elif "action" in message and message["action"] == 'message' and \
-                "to_user" in message and "time" in message \
-                and "from" in message and "msg_text" in message:
+        elif "action" in message and message["action"] == 'message' and 'to' in message and 'time' in message \
+                and 'from' in message and 'mess_text' in message and self.names[message['from']] == client:
             self.messages.append(message)
             self.database.process_message(
                 message['from'], message['to'])
             return
         # Если клиент выходит
-        elif "action" in message and message["action"] == "exit" and "user" in message:
-            self.database.user_logout(message["user"])
-            self.clients.remove(self.names[message["user"]])
-            self.names[message["user"]].close()
-            del self.names[message["user"]]
+        elif "action" in message and message["action"] == "exit" and "account_name" in message \
+                and self.names[message["account_name"]] == client:
+            self.database.user_logout(message["account_name"])
+            self.clients.remove(self.names[message["account_name"]])
+            self.names[message["account_name"]].close()
+            del self.names[message["account_name"]]
             return
-        
+
         # Если это запрос контакт-листа
         elif "action" in message and message["action"] == 'get_contacts' and "user" in message and \
                 self.names[message["user"]] == client:
@@ -131,31 +132,26 @@ class Server(threading.Thread, metaclass=ServerVerifier):
             send_msg(client, response)
 
         # Если это добавление контакта
-        elif "action" in message and message["action"] == 'add_contacts' and "user" in message and \
+        elif "action" in message and message["action"] == 'add' and "account_name" and 'user' in message and \
                 self.names[message["user"]] == client:
-            self.database.add_contact(message["user"], message["user"])
+            self.database.add_contact(message["user"], message["account_name"])
             response = {'response':200}
             send_msg(client, response)
 
         # Если это удаление контакта
-        elif "action" in message and message["action"] == 'remove_contacts' and "user" in message \
+        elif "action" in message and message["action"] == 'remove' and "account_name" and 'user' in message \
                 and self.names[message["user"]] == client:
-            self.database.remove_contact(message["user"], message["user"])
+            self.database.remove_contact(message["user"], message["account_name"])
             response = {'response':200}
             send_msg(client, response)
 
         # Если это запрос известных пользователей
-        elif "action" in message and message["action"] == 'get_user' and "user" in message \
-                and self.names[message["user"]] == client:
+        elif "action" in message and message["action"] == 'get_users' and "account_name" in message \
+                and self.names[message["account_name"]] == client:
             response = {'response':202}
             response['data_list'] = [user[0]
                                    for user in self.database.users_list()]
             send_msg(client, response)
-
-
-
-
-
         # Иначе отдаём Bad request
         else:
             response = {"response": 400,
@@ -164,7 +160,7 @@ class Server(threading.Thread, metaclass=ServerVerifier):
             response["error"] = 'Запрос некорректен.'
             send_msg(client, response)
             return
-        
+
 
     def run(self):
         self.init_socket()
@@ -189,7 +185,7 @@ class Server(threading.Thread, metaclass=ServerVerifier):
                 for client_with_message in recv_list:
                     try:
                         self.process_client_message(get_msg(client_with_message), client_with_message)
-                    except:
+                    except (OSError):
                         logger.info(f'Клиент {client_with_message.getpeername()} '
                                     f'отключился от сервера.')
                         for name in self.names:
@@ -201,11 +197,11 @@ class Server(threading.Thread, metaclass=ServerVerifier):
             for i in self.messages:
                 try:
                     self.process_message(i, send_list)
-                except Exception:
-                    logger.info(f'Связь с клиентом с именем {i["to_user"]} была потеряна')
-                    self.clients.remove(self.names[i["to_user"]])
-                    self.database.user_logout(i["to_user"])
-                    del self.names[i["to_user"]]
+                except (ConnectionAbortedError, ConnectionError, ConnectionResetError, ConnectionRefusedError):
+                    logger.info(f'Связь с клиентом с именем {i["to"]} была потеряна')
+                    self.clients.remove(self.names[i["to"]])
+                    self.database.user_logout(i["to"])
+                    del self.names[i["to"]]
             self.messages.clear()
     print('Запущен сервер')
 
