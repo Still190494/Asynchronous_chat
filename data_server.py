@@ -14,10 +14,12 @@ import logging
 import logs.server_log_config
 import select
 from metaclasses import ServerVerifier
+
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtCore import QTimer
 from server_gui import MainWindow, gui_create_model, HistoryWindow, create_stat_model, ConfigWindow
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
+
 import os.path
 
 
@@ -26,6 +28,7 @@ logger = logging.getLogger('server')
 # постоянными запросами на обновление
 new_connection = False
 conflag_lock = threading.Lock()
+
 
 @log
 def create_arg_parser(default_port, default_address):
@@ -36,6 +39,19 @@ def create_arg_parser(default_port, default_address):
     my_address = namespace.a
     my_port = namespace.p
     return my_address, my_port
+
+
+
+@log
+def create_arg_parser(default_port, default_address):
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', default=default_port, type=int, nargs='?')
+    parser.add_argument('-a', default=default_address, nargs='?')
+    namespace = parser.parse_args(sys.argv[1:])
+    my_address = namespace.a
+    my_port = namespace.p
+    return my_address, my_port
+
 
 class Server(threading.Thread, metaclass=ServerVerifier):
     my_port = DescriptPort()
