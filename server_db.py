@@ -154,7 +154,19 @@ class ServerDB:
         recipient_row = self.session.query(self.UsersHistory).filter_by(user=recipient).first()
         recipient_row.accepted += 1
 
-        self.session.commit()   
+        self.session.commit()
+
+        # Функция возвращает список активных пользователей
+    def active_users_list(self):
+    # Запрашиваем соединение таблиц и собираем кортежи имя, адрес, порт, время.
+        query = self.session.query(
+            self.Client_table.name,
+            self.ActiveUsers.ip_address,
+            self.ActiveUsers.port,
+            self.ActiveUsers.login_time
+        ).join(self.Client_table)
+        # Возвращаем список кортежей
+        return query.all()
 
 
         # Функция возвращает список контактов пользователя.
