@@ -5,7 +5,7 @@ import sys
 import logging
 import traceback
 from logs.decor_log import log
-
+from errors import IncorrectDataRecivedError, NonDictInputError
 sys.setrecursionlimit(10000)
 
 
@@ -38,17 +38,26 @@ def msg_to_client():
 """Получаем и декодим сообщение"""
 @log
 def get_msg(client):
-    msg_js = client.recv(1024)
-    msg_decode = msg_js.decode('utf-8')
-    msg = json.loads(msg_decode)
-    return msg
+    encoded_response = client.recv(1024)
+    if isinstance(encoded_response, bytes):
+        json_response = encoded_response.decode('utf-8')
+        response = json.loads(json_response)
+        if isinstance(response, dict):
+            return response
+        else:
+            raise IncorrectDataRecivedError
+    else:
+        raise IncorrectDataRecivedError
 
 
 '''Энкодим и отправляем сообщение'''
 @log
 def send_msg(s, msg):
-    js_msg = json.dumps(msg)
-    s.send(js_msg.encode('utf-8'))
+    if not isinstance(msg, dict):
+        raise NonDictInputError
+    js_message = json.dumps(msg)
+    encoded_message = js_message.encode('utf-8')
+    s.send(encoded_message)
 
 '''выход'''
 @log
