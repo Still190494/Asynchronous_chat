@@ -8,10 +8,11 @@ import logs.client_log_config
 import argparse
 import time
 import threading
+from client_gui import UserNameDialog
 from metaclasses import ClientVerifier
 from client_db import ClientDB
 from errors import IncorrectDataRecivedError, ReqFieldMissingError, ServerError
-
+from PyQt5.QtWidgets import QApplication
 
 
 
@@ -282,6 +283,7 @@ def database_load(sock, database, username):
 
 def main_client():
     my_address, my_port, client_name = create_arg_parser()
+    client_app = QApplication(sys.argv)
     try:
         if my_port < 1024 or my_port > 65535:
             raise ValueError
@@ -292,7 +294,14 @@ def main_client():
         logger.critical(f'Указан не верный порт!!! Порт не может быть меньше "1024" или больше "65535"')
         exit(1)
     if not client_name:
-        client_name = input('Введите имя пользователя: ')
+        start_dialog = UserNameDialog()
+        client_app.exec_()
+        # Если пользователь ввёл имя и нажал ОК, то сохраняем ведённое и удаляем объект, инааче выходим
+        if start_dialog.ok_pressed:
+            client_name = start_dialog.client_name.text()
+            del start_dialog
+        else:
+            exit(0)
     else:
         print(f'Запущен клиент с парамертами: адрес сервера: {my_address}, '
         f'порт: {my_port}, имя пользователя: {client_name}')
@@ -335,7 +344,15 @@ def main_client():
             break
 
 
+    # Создаём GUI
+    main_window = ClientMainWindow(database, s)
+    main_window.make_connection(s)
+    main_window.setWindowTitle(f'Чат Программа alpha release - {client_name}')
+    client_app.exec_()
 
+    # Раз графическая оболочка закрылась, закрываем транспорт
+    # s.transport_shutdown()
+    # s.join()
 
 
 if __name__ == '__main__':
