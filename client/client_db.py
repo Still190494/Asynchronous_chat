@@ -1,7 +1,8 @@
 import datetime
 from sqlalchemy import DateTime, Text, create_engine, Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.orm import registry, sessionmaker
-
+import os
+import sys
 
 
 
@@ -28,7 +29,9 @@ class ClientDB:
 
 
     def __init__(self, name):
-        self.engine = create_engine(f'sqlite:///{name}.db3', echo=False, pool_recycle=7200,
+        path = os.path.dirname(os.path.realpath(__file__))
+        filename = f'client_{name}.db3'
+        self.engine = create_engine(f'sqlite:///{os.path.join(path, filename)}', echo=False, pool_recycle=7200,
                                              connect_args={'check_same_thread': False})
 
         self.metadata = MetaData()
@@ -115,10 +118,6 @@ class ClientDB:
     # Функция возвращающая историю переписки
     def get_history(self, from_who=None, to_who=None):
         query = self.session.query(self.MessageHistory)
-        if from_who:
-            query = query.filter_by(from_user=from_who)
-        if to_who:
-            query = query.filter_by(to_user=to_who)
         return [(history_row.from_user, history_row.to_user, history_row.message, history_row.date)
                 for history_row in query.all()]
     

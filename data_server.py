@@ -41,29 +41,16 @@ def create_arg_parser(default_port, default_address):
     return my_address, my_port
 
 
-
-@log
-def create_arg_parser(default_port, default_address):
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', default=default_port, type=int, nargs='?')
-    parser.add_argument('-a', default=default_address, nargs='?')
-    namespace = parser.parse_args(sys.argv[1:])
-    my_address = namespace.a
-    my_port = namespace.p
-    return my_address, my_port
-
-
 class Server(threading.Thread, metaclass=ServerVerifier):
     my_port = DescriptPort()
     def __init__(self, my_address, my_port, database):
-        super().__init__()
         self.my_address = my_address
         self.my_port = my_port
         self.clients = []
         self.messages = []
         self.names = dict()
         self.database = database
-
+        super().__init__()
     def init_socket(self):
         try:
             if '-a' in sys.argv:
@@ -187,6 +174,7 @@ class Server(threading.Thread, metaclass=ServerVerifier):
 
 
     def run(self):
+        global new_connection
         self.init_socket()
         while True:
             try:
@@ -218,6 +206,8 @@ class Server(threading.Thread, metaclass=ServerVerifier):
                                 del self.names[name]
                                 break
                         self.clients.remove(client_with_message)
+                        with conflag_lock:
+                            new_connection = True
             for i in self.messages:
                 try:
                     self.process_message(i, send_list)
@@ -226,6 +216,8 @@ class Server(threading.Thread, metaclass=ServerVerifier):
                     self.clients.remove(self.names[i["to"]])
                     self.database.user_logout(i["to"])
                     del self.names[i["to"]]
+                    with conflag_lock:
+                        new_connection = True
             self.messages.clear()
     print('Запущен сервер')
 
