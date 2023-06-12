@@ -39,22 +39,17 @@ def msg_to_client():
 @log
 def get_msg(client):
     encoded_response = client.recv(1024)
-    if isinstance(encoded_response, bytes):
-        json_response = encoded_response.decode('utf-8')
-        response = json.loads(json_response)
-        if isinstance(response, dict):
-            return response
-        else:
-            raise IncorrectDataRecivedError
+    json_response = encoded_response.decode('utf-8')
+    response = json.loads(json_response)
+    if isinstance(response, dict):
+        return response
     else:
-        raise IncorrectDataRecivedError
+        raise TypeError
 
 
 '''Энкодим и отправляем сообщение'''
 @log
 def send_msg(s, msg):
-    if not isinstance(msg, dict):
-        raise NonDictInputError
     js_message = json.dumps(msg)
     encoded_message = js_message.encode('utf-8')
     s.send(encoded_message)
