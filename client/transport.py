@@ -1,8 +1,4 @@
 import socket
-import sys
-import time
-import logging
-import json
 import hashlib
 import hmac
 import binascii
@@ -10,9 +6,9 @@ import threading
 from PyQt5.QtCore import pyqtSignal, QObject
 
 
-from Asynchronous_chat.utils import *
+from Asynchronous_chat.utils.utils import *
 
-from Asynchronous_chat.errors import ServerError
+from Asynchronous_chat.utils.errors import ServerError
 
 # Логер и объект блокировки для работы с сокетом.
 logger = logging.getLogger('client')
@@ -162,8 +158,7 @@ class ClientTransport(threading.Thread, QObject):
         elif 'action' in message and message['action'] == 'message' and 'from' in message and 'to' in message \
                 and 'mess_text' in message and message['to'] == self.username:
             logger.debug(f'Получено сообщение от пользователя {message["from"]}:{message["mess_text"]}')
-            # self.database.save_message(message['from'] , 'in' , message["mess_text"])
-            self.new_message.emit(message['from'])
+            self.new_message.emit(message)
 
 
     # Функция обновляющая контакт - лист с сервера
@@ -303,3 +298,7 @@ class ClientTransport(threading.Thread, QObject):
                     self.process_server_ans(message)
                 finally:
                     self.transport.settimeout(5)
+            # Если сообщение получено, то вызываем функцию обработчик:
+            if message:
+                logger.debug(f'Принято сообщение с сервера: {message}')
+                self.process_server_ans(message)
