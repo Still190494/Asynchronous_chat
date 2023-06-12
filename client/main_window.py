@@ -2,9 +2,11 @@ from PyQt5.QtWidgets import QMainWindow, qApp, QMessageBox, QApplication, QListV
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
 from PyQt5.QtCore import pyqtSlot, QEvent, Qt
 import sys
+import base64
 import json
 import logging
-
+from Cryptodome.Cipher import PKCS1_OAEP
+from Cryptodome.PublicKey import RSA
 
 from Asynchronous_chat.client.main_window_conv import Ui_MainClientWindow
 from Asynchronous_chat.client.add_contact import AddContactDialog
@@ -19,11 +21,14 @@ logger = logging.getLogger('client')
 
 # Класс основного окна
 class ClientMainWindow(QMainWindow):
-    def __init__(self, database, transport):
+    def __init__(self, database, transport, keys):
         super().__init__()
         # основные переменные
         self.database = database
         self.transport = transport
+
+        # объект - дешифорвщик сообщений с предзагруженным ключём
+        self.decrypter = PKCS1_OAEP.new(keys)
 
         # Загружаем конфигурацию окна из дизайнера
         self.ui = Ui_MainClientWindow()
