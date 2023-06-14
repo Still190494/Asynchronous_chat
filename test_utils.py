@@ -1,6 +1,6 @@
 import unittest
 import json
-from utils import get_msg, send_msg, msg_to_server, msg_to_client
+from Asynchronous_chat.utils.utils import get_msg, send_msg, msg_to_server, msg_to_client
 
 
 

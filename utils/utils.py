@@ -4,8 +4,7 @@ import time
 import sys
 import logging
 import traceback
-from logs.decor_log import log
-from errors import IncorrectDataRecivedError, NonDictInputError
+from Asynchronous_chat.logs.decor_log import log
 sys.setrecursionlimit(10000)
 
 

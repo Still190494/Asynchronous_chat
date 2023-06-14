@@ -78,6 +78,10 @@ class ClientDB:
     def del_contact(self, contact):
         self.session.query(self.Contacts).filter_by(name=contact).delete()
 
+    def contacts_clear(self):
+        '''Метод очищающий таблицу со списком контактов.'''
+        self.session.query(self.Contacts).delete()
+
     # Функция добавления известных пользователей.
     # Пользователи получаются только с сервера, поэтому таблица очищается.
     def add_users(self, users_list):

@@ -4,7 +4,7 @@ import logging.handlers
 import os
 
 
-curr_dir = os.path.dirname(os.path.realpath(__file__))
+curr_dir = os.path.dirname(os.path.abspath(__file__))
 log_dir = os.path.join(curr_dir, 'file_logs')
 if not os.path.exists(log_dir):
     os.mkdir(log_dir)
