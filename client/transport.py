@@ -4,7 +4,8 @@ import hmac
 import binascii
 import threading
 from PyQt5.QtCore import pyqtSignal, QObject
-
+import logging
+from Asynchronous_chat.logs.decor_log import log
 
 from Asynchronous_chat.utils.utils import *
 
