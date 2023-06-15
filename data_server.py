@@ -1,24 +1,24 @@
-# Программа сервера для получения приветствия от клиента и отправки ответа
+import logging
 import argparse
 import configparser
 import sys
 import os
-from logs.decor_log import log
-from Asynchronous_chat.server.server_db import ServerDB
-import logging
-from Asynchronous_chat.server.main_window import MainWindow
-from Asynchronous_chat.server.core import MessageProcessor
+import os.path
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt
 
-import os.path
-
+from logs.decor_log import log
+from server.server_db import ServerDB
+from server.main_window import MainWindow
+from server.core import MessageProcessor
 
 logger = logging.getLogger('server')
 
+
 @log
 def create_arg_parser(default_port, default_address):
+    """Функция - парсер командной строки"""
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', default=default_port, type=int, nargs='?')
     parser.add_argument('-a', default=default_address, nargs='?')
@@ -32,7 +32,7 @@ def create_arg_parser(default_port, default_address):
 
 @log
 def config_load():
-    '''Парсер конфигурационного ini файла.'''
+    """Функция - парсер конфигурационного файла"""
     config = configparser.ConfigParser()
     dir_path = os.path.dirname(os.path.realpath(__file__))
     config.read(f"{dir_path}/{'server.ini'}")
@@ -51,7 +51,7 @@ def config_load():
 
 @log
 def main():
-    '''Основная функция'''
+    """Основная функция реализующая работу сервера"""
     # Загрузка файла конфигурации сервера
     config = config_load()
 
@@ -98,4 +98,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

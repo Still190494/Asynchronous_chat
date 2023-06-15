@@ -2,7 +2,7 @@
 # Меняться должен только последний октет каждого адреса.
 # По результатам проверки должно выводиться соответствующее сообщение.
 
-from ipaddress import ip_address, ip_network
+from ipaddress import ip_address
 from subprocess import PIPE, Popen
 
 
@@ -14,10 +14,9 @@ from subprocess import PIPE, Popen
 def host_range_ping():
     start = input('Введите IP: ')
     stop = int(input('Введите колличество адрессов: '))
-
     my_dict = {'Доступные узлы': "", 'Недоступные узлы': ""}
     host_list = []
-    [host_list.append(str(ip_address(start)+x)) for x in range(int(stop))]
+    [host_list.append(str(ip_address(start) + x)) for x in range(int(stop))]
     for hostname in host_list:
         try:
             hostname = ip_address(hostname)

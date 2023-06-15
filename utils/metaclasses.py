@@ -1,8 +1,11 @@
 import dis
 
 
-# Метакласс для проверки корректности клиентов:
 class ClientVerifier(type):
+    """Метакласс, проверяющий что в результирующем классе нет серверных
+    вызовов таких как: accept, listen. Также проверяется, что сокет не
+    создаётся внутри конструктора класса."""
+
     def __init__(self, clsname, bases, clsdict):
         # Список методов, которые используются в функциях класса:
         methods = []
@@ -30,22 +33,12 @@ class ClientVerifier(type):
         super().__init__(clsname, bases, clsdict)
 
 
-
-# Метакласс для проверки соответствия сервера:
 class ServerVerifier(type):
-    def __init__(self, clsname, bases, clsdict):
-        # clsname - экземпляр метакласса - Server
-        # bases - кортеж базовых классов - ()
-        # clsdict - словарь атрибутов и методов экземпляра метакласса
-        # {'__module__': '__main__',
-        # '__qualname__': 'Server',
-        # 'port': <descrptrs.Port object at 0x000000DACC8F5748>,
-        # '__init__': <function Server.__init__ at 0x000000DACCE3E378>,
-        # 'init_socket': <function Server.init_socket at 0x000000DACCE3E400>,
-        # 'main_loop': <function Server.main_loop at 0x000000DACCE3E488>,
-        # 'process_message': <function Server.process_message at 0x000000DACCE3E510>,
-        # 'process_client_message': <function Server.process_client_message at 0x000000DACCE3E598>}
+    """Метакласс, проверяющий что в результирующем классе нет клиентских
+    вызовов таких как: connect. Также проверяется, что серверный
+    сокет является TCP и работает по IPv4 протоколу."""
 
+    def __init__(self, clsname, bases, clsdict):
         # Список методов, которые используются в функциях класса:
         methods = []
         # Атрибуты, используемые в функциях классов
@@ -88,4 +81,3 @@ class ServerVerifier(type):
             raise TypeError('Некорректная инициализация сокета.')
         # Обязательно вызываем конструктор предка:
         super().__init__(clsname, bases, clsdict)
-

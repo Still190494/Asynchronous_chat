@@ -24,11 +24,12 @@ import csv
 
 def get_data():
     file_list = ['info_1.txt', 'info_2.txt', 'info_3.txt']
-    main_data = [['Изготовитель системы', 'Название ОС', 'Код продукта', 'Тип системы'], [], [], []] ###   «Главный список»
-    os_prod_list = [] ###   «Изготовитель системы»
-    os_name_list = [] ###   «Название ОС»
-    os_code_list = [] ###   «Код продукта»
-    os_type_list = [] ###   «Тип системы»
+    main_data = [['Изготовитель системы', 'Название ОС', 'Код продукта', 'Тип системы'], [], [],
+                 []]   # «Главный список»
+    os_prod_list = []  # «Изготовитель системы»
+    os_name_list = []  # «Название ОС»
+    os_code_list = []  # «Код продукта»
+    os_type_list = []  # «Тип системы»
     for i in file_list:
         with open(i, encoding='cp1251') as file:
             data = file.read()
@@ -47,6 +48,7 @@ def get_data():
         main_data[i + 1].append(os_type_list[i])
     return main_data
 
+
 def write_to_csv(file):
     main_data = get_data()
     with open(file, 'w', encoding='utf-8') as file:
@@ -56,5 +58,3 @@ def write_to_csv(file):
 
 
 write_to_csv('test.csv')
-
-

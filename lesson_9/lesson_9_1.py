@@ -10,7 +10,7 @@ from subprocess import PIPE, Popen
 ip_list = ['google.com', '192.168.0.305', 'vk.com', '192.168.0.1']
 
 
-def host_ping(ip_list):
+def host_ping(my_ip_list):
     for hostname in ip_list:
         try:
             hostname = ip_address(hostname)
@@ -23,7 +23,6 @@ def host_ping(ip_list):
         else:
             print(hostname, '«Узел недоступен»')
 
+
 if __name__ == '__main__':
     host_ping(ip_list)
-
-

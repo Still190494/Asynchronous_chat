@@ -3,7 +3,6 @@
 
 import subprocess
 
-
 args = ['ping', 'yandex.ru']
 subproc_ping = subprocess.Popen(args, stdout=subprocess.PIPE)
 for line in subproc_ping.stdout:

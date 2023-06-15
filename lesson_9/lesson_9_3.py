@@ -10,10 +10,8 @@
 # 10.0.0.4
 
 
-
 from lesson_9_2 import host_range_ping
 from tabulate import tabulate
-
 
 
 def host_range_ping_tab():

@@ -4,8 +4,9 @@
 # Проверить работу программы через вызов функции write_order_to_json() с передачей в нее значений каждого параметра. 
 
 
-from datetime import date
 import json
+from datetime import date
+
 
 def write_order_to_json():
     current_date = str(date.today())
@@ -14,14 +15,12 @@ def write_order_to_json():
     price = int(input('Введите цену товара: '))
     buyer = input('Введите покупателя товара: ')
     my_dict = {
-        'Item' : item,
-        'Quantity' : quantity,
-        'Price' : price,
-        'Buyer' : buyer,
-        'Date' : current_date
+        'Item': item,
+        'Quantity': quantity,
+        'Price': price,
+        'Buyer': buyer,
+        'Date': current_date
     }
-
-
     with open('orders.json', 'r', encoding='utf8') as f_o:
         data = json.load(f_o)
 

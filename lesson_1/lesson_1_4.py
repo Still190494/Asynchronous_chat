@@ -4,12 +4,7 @@
 
 
 my_list = ['разработка', 'администрирование', 'protocol', 'standard']
-
-
 for i in my_list:
     encode_str = i.encode('utf-8')
     decode_str = encode_str.decode('utf-8')
     print(f'Байтовое представление - {encode_str}\nСтроковое представление - {decode_str}\n')
-
-
-

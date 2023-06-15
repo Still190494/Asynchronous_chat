@@ -5,38 +5,20 @@ import sys
 import logging
 import traceback
 from Asynchronous_chat.logs.decor_log import log
-sys.setrecursionlimit(10000)
 
 
-# """Сообщение для сервера"""
-# @log
-# def msg_to_server():
-#     text_msg = input('Напишите сообщение: ')
-#     to_user = input('Введите пользователя: ')
-#     msg = {
-#     "action": "authenticate",
-#     "time": time.time(),
-#     "user": "admin",
-#     "to_users": to_user,
-#     "msg_text": text_msg
-#     }
-#     return msg
-
-
-"""Сообщение для клиента"""
 @log
 def msg_to_client():
+    """Ответ клиенту"""
     response_msg = {
         "response": 200,
     }
     return response_msg
 
 
-
-
-"""Получаем и декодим сообщение"""
 @log
 def get_msg(client):
+    """Функция получения и декодирования сообщений"""
     encoded_response = client.recv(1024)
     json_response = encoded_response.decode('utf-8')
     response = json.loads(json_response)
@@ -46,16 +28,17 @@ def get_msg(client):
         raise TypeError
 
 
-'''Энкодим и отправляем сообщение'''
 @log
 def send_msg(s, msg):
+    """Функция энкодинга и отправки сообщений"""
     js_message = json.dumps(msg)
     encoded_message = js_message.encode('utf-8')
     s.send(encoded_message)
 
-'''выход'''
+
 @log
 def create_exit_message(account_name):
+    """Функция возвращающая сообщение о выходе"""
     return {
         "action": "exit",
         "time": time.time(),

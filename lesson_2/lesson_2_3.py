@@ -8,7 +8,6 @@
 
 import yaml
 
-
 my_list_1 = ['samsung', 'apple', 'dell', 'lg']
 quantity = 10
 my_list_2 = {

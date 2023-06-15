@@ -1,14 +1,8 @@
-# -*- coding: utf-8 -*-
+from PyQt5 import QtCore, QtWidgets
 
-# Form implementation generated from reading ui file 'client.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
-from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_MainClientWindow(object):
+    """Класс отображения основного окна"""
     def setupUi(self, MainClientWindow):
         MainClientWindow.setObjectName("MainClientWindow")
         MainClientWindow.resize(756, 534)
@@ -31,7 +25,7 @@ class Ui_MainClientWindow(object):
         self.text_message.setGeometry(QtCore.QRect(300, 360, 441, 71))
         self.text_message.setObjectName("text_message")
         self.label_new_message = QtWidgets.QLabel(self.centralwidget)
-        self.label_new_message.setGeometry(QtCore.QRect(300, 330, 450, 16)) # Правка тут
+        self.label_new_message.setGeometry(QtCore.QRect(300, 330, 450, 16))  # Правка тут
         self.label_new_message.setObjectName("label_new_message")
         self.list_contacts = QtWidgets.QListView(self.centralwidget)
         self.list_contacts.setGeometry(QtCore.QRect(10, 20, 251, 411))
@@ -76,7 +70,7 @@ class Ui_MainClientWindow(object):
 
     def retranslateUi(self, MainClientWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainClientWindow.setWindowTitle(_translate("MainClientWindow", "Чат Программа alpha release"))
+        MainClientWindow.setWindowTitle(_translate("MainClientWindow", "Чат Программа"))
         self.label_contacts.setText(_translate("MainClientWindow", "Список контактов:"))
         self.btn_add_contact.setText(_translate("MainClientWindow", "Добавить контакт"))
         self.btn_remove_contact.setText(_translate("MainClientWindow", "Удалить контакт"))
@@ -89,4 +83,3 @@ class Ui_MainClientWindow(object):
         self.menu_exit.setText(_translate("MainClientWindow", "Выход"))
         self.menu_add_contact.setText(_translate("MainClientWindow", "Добавить контакт"))
         self.menu_del_contact.setText(_translate("MainClientWindow", "Удалить контакт"))
-

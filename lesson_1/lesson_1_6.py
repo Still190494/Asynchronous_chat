@@ -7,7 +7,6 @@ with open('test_file.txt') as f_n:
     print(f_n)
 f_n.close()
 
-
 with open('test_file.txt', "r", encoding='utf-8') as f_n_1:
     for el_str in f_n_1:
         print(f'{el_str}\n')

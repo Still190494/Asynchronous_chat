@@ -4,7 +4,7 @@ import os
 
 
 class ConfigWindow(QDialog):
-    '''Класс окно настроек.'''
+    """Класс отображения окна настроек сервера"""
 
     def __init__(self, config):
         super().__init__()
@@ -12,7 +12,7 @@ class ConfigWindow(QDialog):
         self.initUI()
 
     def initUI(self):
-        '''Настройки окна'''
+        """Метод отображения и настройки окна"""
         self.setFixedSize(365, 260)
         self.setWindowTitle('Настройки сервера')
         self.setAttribute(Qt.WA_DeleteOnClose)
@@ -90,7 +90,7 @@ class ConfigWindow(QDialog):
         self.save_btn.clicked.connect(self.save_server_config)
 
     def open_file_dialog(self):
-        '''Метод обработчик открытия окна выбора папки.'''
+        """Метод обрабатывающий выбор папки"""
         global dialog
         dialog = QFileDialog(self)
         path = dialog.getExistingDirectory()
@@ -99,11 +99,7 @@ class ConfigWindow(QDialog):
         self.db_path.insert(path)
 
     def save_server_config(self):
-        '''
-        Метод сохранения настроек.
-        Проверяет правильность введённых данных и
-        если всё правильно сохраняет ini файл.
-        '''
+        """Метод сохранения настроек"""
         global config_window
         message = QMessageBox()
         self.config['SETTINGS']['Database_path'] = self.db_path.text()
