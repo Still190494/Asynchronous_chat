@@ -1,21 +1,24 @@
 import sys
 import os
+import logging
+import argparse
+
+from PyQt5.QtWidgets import QApplication, QMessageBox
+from Cryptodome.PublicKey import RSA
+
 from client.main_window import ClientMainWindow
 from client.start_dialog import UserNameDialog
 from logs.decor_log import log
-import logging
-import argparse
 from client.transport import ClientTransport
 from client.client_db import ClientDB
 from Asynchronous_chat.utils.errors import ServerError
-from PyQt5.QtWidgets import QApplication, QMessageBox
-from Cryptodome.PublicKey import RSA
 
 logger = logging.getLogger('client')
 
 
 @log
 def create_arg_parser():
+    """Функция - парсер командной строки"""
     parser = argparse.ArgumentParser()
     parser.add_argument('addr', default='127.0.0.1', nargs='?')
     parser.add_argument('port', default=7777, type=int, nargs='?')
@@ -81,6 +84,3 @@ if __name__ == '__main__':
     # Раз графическая оболочка закрылась, закрываем транспорт
     transport.transport_shutdown()
     transport.join()
-
-
-

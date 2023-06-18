@@ -4,8 +4,9 @@ class IncorrectDataRecivedError(Exception):
         return 'Принято некорректное сообщение от удалённого компьютера.'
 
 
-# Исключение - ошибка сервера
 class ServerError(Exception):
+    '''Ошибка сервера'''
+
     def __init__(self, text):
         self.text = text
 

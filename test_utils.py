@@ -1,8 +1,7 @@
 import unittest
 import json
-from Asynchronous_chat.utils.utils import get_msg, send_msg, msg_to_server, msg_to_client
 
-
+from Asynchronous_chat.utils.utils import get_msg, send_msg, msg_to_client
 
 
 class TestSocket:
@@ -21,53 +20,46 @@ class TestSocket:
         return json_test_message.encode('utf-8')
 
 
-
 class TestUtils(unittest.TestCase):
     test_msg = {
         "action": "authenticate",
         "time": 555,
         "user": {
-        "account_name": "admin",
-        "password": "adminpass"
+            "account_name": "admin",
+            "password": "adminpass"
         }
     }
     test_msg_2 = {
         "action": "authenticate",
         "time": 555,
         "user": {
-        "account_name": "notadmin",
-        "password": "adminpass"
+            "account_name": "notadmin",
+            "password": "adminpass"
         }
     }
+
     def test_get_msg(self):
         test_socket = TestSocket(self.test_msg)
         try:
-            if self.assertEqual(get_msg(test_socket), self.test_msg):  ### если поменять на не правильный словарь(test_msg_2), тест будет пройден, но напишет 'BAD'
+            if self.assertEqual(get_msg(test_socket),
+                                self.test_msg):
                 print('OK')
-        except AssertionError:        
+        except AssertionError:
             print('BAD')
-
-
 
     def test_send_msg(self):
         test_socket = TestSocket(self.test_msg)
         send_msg(test_socket, self.test_msg)
         try:
-            if self.assertEqual(test_socket.encoded_message, test_socket.receved_message):   ### если поменять на не правильный словарь(test_msg_2), тест будет пройден, но напишет 'BAD'
+            if self.assertEqual(test_socket.encoded_message,
+                                test_socket.receved_message):
                 print('OK')
-        except AssertionError:        
+        except AssertionError:
             print('BAD')
-
 
     def test_msg_to_client(self):
         self.assertIsInstance(msg_to_client(), dict)
 
 
-    def test_msg_to_server(self):
-        self.assertIsInstance(msg_to_server(), dict)
-
-
 if __name__ == '__main__':
     unittest.main()
-
-

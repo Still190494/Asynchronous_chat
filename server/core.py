@@ -6,6 +6,7 @@ import json
 import hmac
 import binascii
 import os
+
 from Asynchronous_chat.logs.decor_log import log
 from Asynchronous_chat.utils.metaclasses import ServerVerifier
 from Asynchronous_chat.utils.descriptors import DescriptPort
@@ -17,11 +18,7 @@ logger = logging.getLogger('server')
 
 
 class MessageProcessor(threading.Thread):
-    '''
-    Основной класс сервера. Принимает содинения, словари - пакеты
-    от клиентов, обрабатывает поступающие сообщения.
-    Работает в качестве отдельного потока.
-    '''
+    """Класс Сервер"""
     port = DescriptPort()
 
     def __init__(self, listen_address, listen_port, database):
@@ -52,7 +49,7 @@ class MessageProcessor(threading.Thread):
         super().__init__()
 
     def run(self):
-        '''Метод основной цикл потока.'''
+        """Метод обрабатывающий взаимодействие клиентов с сервером"""
         # Инициализация Сокета
         self.init_socket()
 
@@ -90,10 +87,7 @@ class MessageProcessor(threading.Thread):
                         self.remove_client(client_with_message)
 
     def remove_client(self, client):
-        '''
-        Метод обработчик клиента с которым прервана связь.
-        Ищет клиента и удаляет его из списков и базы:
-        '''
+        """Метод отключения пользователя"""
         logger.info(f'Клиент {client.getpeername()} отключился от сервера.')
         for name in self.names:
             if self.names[name] == client:
@@ -104,7 +98,7 @@ class MessageProcessor(threading.Thread):
         client.close()
 
     def init_socket(self):
-        '''Метод инициализатор сокета.'''
+        """Метод создания сокета"""
         logger.info(
             f'Запущен сервер, порт для подключений: {self.port} , адрес с которого принимаются подключения: {self.addr}. Если адрес не указан, принимаются соединения с любых адресов.')
         # Готовим сокет
@@ -117,9 +111,7 @@ class MessageProcessor(threading.Thread):
         self.sock.listen()
 
     def process_message(self, message):
-        '''
-        Метод отправки сообщения клиенту.
-        '''
+        """Метод отправки сообщений пользователям"""
         if message['to'] in self.names and self.names[message['to']
         ] in self.listen_sockets:
             try:
@@ -138,7 +130,7 @@ class MessageProcessor(threading.Thread):
 
     @login_required
     def process_client_message(self, message, client):
-        '''Метод отбработчик поступающих сообщений.'''
+        """Метод обрабатывающий полученные сообщения от клиентов"""
         logger.debug(f'Разбор сообщения от клиента : {message}')
         # Если это сообщение о присутствии, принимаем и отвечаем
         if 'action' in message and message['action'] == 'presence' and 'time' in message and 'user' in message:
@@ -159,8 +151,7 @@ class MessageProcessor(threading.Thread):
                     self.remove_client(client)
             else:
                 response = {"response": 400,
-                            "error": None}
-                response['error'] = 'Пользователь не зарегистрирован на сервере.'
+                            "error": 'Пользователь не зарегистрирован на сервере'}
                 try:
                     send_msg(client, response)
                 except OSError:
@@ -176,9 +167,7 @@ class MessageProcessor(threading.Thread):
         elif 'action' in message and message['action'] == 'get_contacts' and 'user' in message and \
                 self.names[message['user']] == client:
             response = {'response': 202,
-                        'data_list': None
-                        }
-            response['data_list'] = self.database.get_contacts(message['user'])
+                        'data_list': self.database.get_contacts(message['user'])}
             try:
                 send_msg(client, response)
             except OSError:
@@ -207,8 +196,7 @@ class MessageProcessor(threading.Thread):
         # Если это запрос известных пользователей
         elif 'action' in message and message['action'] == 'get_users' and 'account_name' in message \
                 and self.names[message['account_name']] == client:
-            response = {'response': 202, 'data_list': None}
-            response['data_list'] = [user[0] for user in self.database.users_list()]
+            response = {'response': 202, 'data_list': [user[0] for user in self.database.users_list()]}
             try:
                 send_msg(client, response)
             except OSError:
@@ -217,9 +205,7 @@ class MessageProcessor(threading.Thread):
         # Если это запрос публичного ключа пользователя
         elif 'action' in message and message['action'] == 'pubkey_need' and 'account_name' in message:
             response = {'response': 511,
-                        'bin': None
-                        }
-            response['bin'] = self.database.get_pubkey(message['account_name'])
+                        'bin': self.database.get_pubkey(message['account_name'])}
             # может быть, что ключа ещё нет (пользователь никогда не логинился,
             # тогда шлём 400)
             if response['bin']:
@@ -229,8 +215,7 @@ class MessageProcessor(threading.Thread):
                     self.remove_client(client)
             else:
                 response = {"response": 400,
-                            "error": None}
-                response["error"] = 'Нет публичного ключа для данного пользователя'
+                            "error": 'Нет публичного ключа для данного пользователя'}
                 try:
                     send_msg(client, response)
                 except OSError:
@@ -239,21 +224,19 @@ class MessageProcessor(threading.Thread):
         # Иначе отдаём Bad request
         else:
             response = {"response": 400,
-                        "error": None}
-            response["error"] = 'Запрос некорректен.'
+                        "error": 'Запрос некорректен.'}
             try:
                 send_msg(client, response)
             except OSError:
                 self.remove_client(client)
 
     def autorize_user(self, message, sock):
-        '''Метод реализующий авторизцию пользователей.'''
+        """Метод авторизации пользователей"""
         # Если имя пользователя уже занято то возвращаем 400
         logger.debug(f'Start auth process for {message["user"]}')
         if message['user']['account_name'] in self.names.keys():
             response = {"response": 400,
-                        "error": None}
-            response["error"] = 'Имя пользователя уже занято.'
+                        "error": 'Имя пользователя уже занято.'}
             try:
                 logger.debug(f'Username busy, sending {response}')
                 send_msg(sock, response)
@@ -265,8 +248,7 @@ class MessageProcessor(threading.Thread):
         # Проверяем что пользователь зарегистрирован на сервере.
         elif not self.database.check_user(message['user']['account_name']):
             response = {"response": 400,
-                        "error": None}
-            response["error"] = 'Пользователь не зарегистрирован.'
+                        "error": 'Пользователь не зарегистрирован.'}
             try:
                 logger.debug(f'Unknown username, sending {response}')
                 send_msg(sock, response)
@@ -319,8 +301,7 @@ class MessageProcessor(threading.Thread):
                     message['user']['pubkey'])
             else:
                 response = {"response": 400,
-                            "error": None}
-                response["error"] = 'Неверный пароль.'
+                            "error": 'Неверный пароль.'}
                 try:
                     send_msg(sock, response)
                 except OSError:
@@ -329,7 +310,7 @@ class MessageProcessor(threading.Thread):
                 sock.close()
 
     def service_update_lists(self):
-        '''Метод реализующий отправки сервисного сообщения 205 клиентам.'''
+        """Метод реализующий отправку сервисного сообщения 205 клиентам."""
         for client in self.names:
             try:
                 response = {"response": 205}

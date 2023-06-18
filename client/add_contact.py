@@ -7,13 +7,12 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from Asynchronous_chat.logs.decor_log import log
 
-
-
 logger = logging.getLogger('client')
 
 
-# Диалог выбора контакта для добавления
 class AddContactDialog(QDialog):
+    """Класс добавления контактов"""
+
     def __init__(self, transport, database):
         super().__init__()
         self.transport = transport
@@ -50,8 +49,9 @@ class AddContactDialog(QDialog):
         # Назначаем действие на кнопку обновить
         self.btn_refresh.clicked.connect(self.update_possible_contacts)
 
-    # Заполняем список возможных контактов разницей между всеми пользователями и
     def possible_contacts_update(self):
+        """Метод заполняющий список зарегистрированных пользователей,
+        которых можно добавить в контакты"""
         self.selector.clear()
         # множества всех контактов и контактов клиента
         contacts_list = set(self.database.get_contacts())
@@ -61,9 +61,8 @@ class AddContactDialog(QDialog):
         # Добавляем список возможных контактов
         self.selector.addItems(users_list - contacts_list)
 
-    # Обновлялка возможных контактов. Обновляет таблицу известных пользователей,
-    # затем содержимое предполагаемых контактов
     def update_possible_contacts(self):
+        """Метод обновления списка зарегистрированных пользователей"""
         try:
             self.transport.user_list_update()
         except OSError:
