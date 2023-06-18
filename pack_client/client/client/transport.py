@@ -6,8 +6,12 @@ import threading
 import logging
 import json
 import time
+import os
+import os.path
 
 from PyQt5.QtCore import pyqtSignal, QObject
+
+
 
 from logs.decor_log import log
 from utils.utils import *
