@@ -5,10 +5,11 @@ from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QApplication, QLabel, QT
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtCore import QTimer
 
-from server.stat_window import StatWindow
-from server.config_window import ConfigWindow
-from server.add_user import RegisterUser
-from server.remove_user import DelUserDialog
+
+from Asynchronous_chat.server.stat_window import StatWindow
+from Asynchronous_chat.server.config_window import ConfigWindow
+from Asynchronous_chat.server.add_user import RegisterUser
+from Asynchronous_chat.server.remove_user import DelUserDialog
 
 
 class MainWindow(QMainWindow):
