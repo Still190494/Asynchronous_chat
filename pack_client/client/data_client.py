@@ -11,7 +11,7 @@ from client.start_dialog import UserNameDialog
 from logs.decor_log import log
 from client.transport import ClientTransport
 from client.client_db import ClientDB
-from Asynchronous_chat.utils.errors import ServerError
+from utils.errors import ServerError
 
 logger = logging.getLogger('client')
 
@@ -34,7 +34,7 @@ def create_arg_parser():
         logger.critical(
             f'Попытка запуска клиента с неподходящим номером порта: {my_port}.'
             f' Допустимы адреса с 1024 до 65535. Клиент завершается.')
-        exit(1)
+        sys.exit(1)
     return my_address, my_port, client_name, client_passwd
 
 
@@ -50,12 +50,12 @@ if __name__ == '__main__':
             client_passwd = start_dialog.client_passwd.text()
             logger.debug(f'Using USERNAME = {client_name}, PASSWD = {client_passwd}.')
         else:
-            exit(0)
-            # Записываем логи
-            logger.info(
-                f'Запущен клиент с парамертами: адрес сервера: {my_address} , порт: {my_port}, имя пользователя: {client_name}')
+            sys.exit(0)
+    # Записываем логи
+    logger.info(
+        f'Запущен клиент с парамертами: адрес сервера: {my_address} , порт: {my_port}, имя пользователя: {client_name}')
     # Загружаем ключи с файла, если же файла нет, то генерируем новую пару.
-    dir_path = os.path.dirname(os.path.realpath(__file__))
+    dir_path = os.getcwd()
     key_file = os.path.join(dir_path, f'{client_name}.key')
     if not os.path.exists(key_file):
         keys = RSA.generate(2048, os.urandom)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     except ServerError as error:
         message = QMessageBox()
         message.critical(start_dialog, 'Ошибка сервера', error.text)
-        exit(1)
+        sys.exit(1)
     transport.setDaemon(True)
     transport.start()
     del start_dialog

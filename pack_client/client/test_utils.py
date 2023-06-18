@@ -1,7 +1,7 @@
 import unittest
 import json
 
-from Asynchronous_chat.utils.utils import get_msg, send_msg, msg_to_client
+from utils import get_msg, send_msg, msg_to_client
 
 
 class TestSocket:

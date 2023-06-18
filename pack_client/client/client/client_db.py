@@ -3,7 +3,7 @@ import os
 
 from sqlalchemy import DateTime, Text, create_engine, Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.orm import registry, sessionmaker
-
+from sqlalchemy.sql import default_comparator
 
 class ClientDB:
     """Класс создания и взаимодействия с клиентской базой данных"""
@@ -34,7 +34,7 @@ class ClientDB:
 
     def __init__(self, name):
         """Конструктор класса, создающий базу данных клиентов"""
-        path = os.path.dirname(os.path.realpath(__file__))
+        path = os.getcwd()
         filename = f'client_{name}.db3'
         self.engine = create_engine(f'sqlite:///{os.path.join(path, filename)}', echo=False, pool_recycle=7200,
                                     connect_args={'check_same_thread': False})

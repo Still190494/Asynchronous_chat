@@ -5,12 +5,13 @@ import binascii
 import threading
 import logging
 import json
+import time
 
 from PyQt5.QtCore import pyqtSignal, QObject
 
-from Asynchronous_chat.logs.decor_log import log
-from Asynchronous_chat.utils.utils import *
-from Asynchronous_chat.utils.errors import ServerError
+from logs.decor_log import log
+from utils.utils import *
+from utils.errors import ServerError
 
 # Логгер и объект блокировки для работы с сокетом.
 logger = logging.getLogger('client')

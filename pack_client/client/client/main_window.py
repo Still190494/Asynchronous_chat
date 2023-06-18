@@ -10,12 +10,11 @@ from PyQt5.QtCore import pyqtSlot, Qt
 from Cryptodome.Cipher import PKCS1_OAEP
 from Cryptodome.PublicKey import RSA
 
-sys.path.append('../')
-from Asynchronous_chat.client.main_window_conv import Ui_MainClientWindow
-from Asynchronous_chat.client.add_contact import AddContactDialog
-from Asynchronous_chat.client.del_contact import DelContactDialog
-from Asynchronous_chat.utils.errors import ServerError
-from Asynchronous_chat.logs.decor_log import log
+from client.main_window_conv import Ui_MainClientWindow
+from client.add_contact import AddContactDialog
+from client.del_contact import DelContactDialog
+from utils.errors import ServerError
+from logs.decor_log import log
 
 logger = logging.getLogger('client')
 

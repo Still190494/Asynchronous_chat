@@ -4,7 +4,7 @@ import time
 import sys
 import logging
 import traceback
-from Asynchronous_chat.logs.decor_log import log
+from logs.decor_log import log
 
 
 @log
