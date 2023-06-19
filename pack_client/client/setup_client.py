@@ -2,7 +2,7 @@ import sys
 from cx_Freeze import setup, Executable
 
 build_exe_options = {
-    "packages": ["utils", "logs", "client"],
+    "packages": ["utils", "logs", "client", "sqlite3"],
 }
 setup(
     name="client_chat_pyqt_still190494_exe",
